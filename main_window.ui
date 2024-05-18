@@ -24,7 +24,17 @@
      </rect>
     </property>
     <property name="text">
-     <string>Hello Rosie</string>
+     <string>Wheelbearing catalogue</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="manufacturerComboBox">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>130</y>
+      <width>104</width>
+      <height>26</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -34,7 +44,7 @@
      <x>0</x>
      <y>0</y>
      <width>1440</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>
