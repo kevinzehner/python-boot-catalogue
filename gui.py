@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
         self.engineSizeComboBox = self.findChild(QComboBox, "engineSizeComboBox")
         self.markSeriesComboBox = self.findChild(QComboBox, "markSeriesComboBox")
+        self.driveTypeComboBox = self.findChild(QComboBox, "driveTypeComboBox")
 
         # Set placeholders for the combo boxes
         self.manufacturerComboBox.addItem("Select manufacturer")
@@ -37,6 +38,8 @@ class MainWindow(QMainWindow):
         self.engineSizeComboBox.setCurrentIndex(0)
         self.markSeriesComboBox.addItem("Select mark series")
         self.markSeriesComboBox.setCurrentIndex(0)
+        self.driveTypeComboBox.addItem("Select drive type")
+        self.driveTypeComboBox.setCurrentIndex(0)
 
         # Populate the manufacturerComboBox with unique manufacturers from the database
         self.populateManufacturers()
@@ -45,6 +48,7 @@ class MainWindow(QMainWindow):
         self.manufacturerComboBox.currentIndexChanged.connect(self.updateModels)
         self.modelComboBox.currentIndexChanged.connect(self.updateEngineSizes)
         self.engineSizeComboBox.currentIndexChanged.connect(self.updateMarkSeries)
+        self.markSeriesComboBox.currentIndexChanged.connect(self.updateDriveTypes)
 
     def populateManufacturers(self):
         if self.manufacturerComboBox is not None:
@@ -76,6 +80,8 @@ class MainWindow(QMainWindow):
                 self.engineSizeComboBox.addItem("Select engine size")
                 self.markSeriesComboBox.clear()
                 self.markSeriesComboBox.addItem("Select mark series")
+                self.driveTypeComboBox.clear()
+                self.driveTypeComboBox.addItem("Select drive type")
                 return
 
             # Clear the current items in the modelComboBox
@@ -112,6 +118,8 @@ class MainWindow(QMainWindow):
                 self.engineSizeComboBox.addItem("Select engine size")
                 self.markSeriesComboBox.clear()
                 self.markSeriesComboBox.addItem("Select mark series")
+                self.driveTypeComboBox.clear()
+                self.driveTypeComboBox.addItem("Select drive type")
                 return
 
             # Clear the current items in the engineSizeComboBox
@@ -148,6 +156,8 @@ class MainWindow(QMainWindow):
             if selected_engine_size == "Select engine size":
                 self.markSeriesComboBox.clear()
                 self.markSeriesComboBox.addItem("Select mark series")
+                self.driveTypeComboBox.clear()
+                self.driveTypeComboBox.addItem("Select drive type")
                 return
 
             # Clear the current items in the markSeriesComboBox
@@ -168,8 +178,45 @@ class MainWindow(QMainWindow):
 
             # Close the database connection
             conn.close()
+
+            # Trigger update for drive types
+            self.updateDriveTypes()
         else:
             print("Error: QComboBox with objectName 'markSeriesComboBox' not found")
+
+    def updateDriveTypes(self):
+        if self.driveTypeComboBox is not None:
+            # Get the selected manufacturer, model, engine size, and mark series
+            selected_manufacturer = self.manufacturerComboBox.currentText()
+            selected_model = self.modelComboBox.currentText()
+            selected_engine_size = self.engineSizeComboBox.currentText()
+            selected_mark_series = self.markSeriesComboBox.currentText()
+
+            if selected_mark_series == "Select mark series":
+                self.driveTypeComboBox.clear()
+                self.driveTypeComboBox.addItem("Select drive type")
+                return
+
+            # Clear the current items in the driveTypeComboBox
+            self.driveTypeComboBox.clear()
+            self.driveTypeComboBox.addItem("Select drive type")
+
+            # Connect to the SQLite database
+            conn = sqlite3.connect('wheelbearings.db')
+            cursor = conn.cursor()
+
+            # Execute a query to get drive types for the selected manufacturer, model, engine size, and mark series
+            cursor.execute("SELECT DISTINCT TransDrive FROM wheelbearing WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ?", 
+                           (selected_manufacturer, selected_model, selected_engine_size, selected_mark_series))
+            drive_types = [row[0] for row in cursor.fetchall()]
+
+            # Populate the driveTypeComboBox with the retrieved drive types
+            self.driveTypeComboBox.addItems(drive_types)
+
+            # Close the database connection
+            conn.close()
+        else:
+            print("Error: QComboBox with objectName 'driveTypeComboBox' not found")
 
 if __name__ == "__main__":
     # Create an instance of the QApplication

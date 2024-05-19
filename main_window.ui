@@ -50,8 +50,8 @@
    <widget class="QComboBox" name="engineSizeComboBox">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>130</y>
+      <x>350</x>
+      <y>200</y>
       <width>251</width>
       <height>51</height>
      </rect>
@@ -62,6 +62,16 @@
      <rect>
       <x>60</x>
       <y>200</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="driveTypeComboBox">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>280</y>
       <width>251</width>
       <height>51</height>
      </rect>
