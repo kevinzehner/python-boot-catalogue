@@ -27,6 +27,14 @@ class MainWindow(QMainWindow):
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
         self.engineSizeComboBox = self.findChild(QComboBox, "engineSizeComboBox")
 
+        # Set placeholders for the combo boxes
+        self.manufacturerComboBox.addItem("Select manufacturer")
+        self.manufacturerComboBox.setCurrentIndex(0)
+        self.modelComboBox.addItem("Select model")
+        self.modelComboBox.setCurrentIndex(0)
+        self.engineSizeComboBox.addItem("Select engine size")
+        self.engineSizeComboBox.setCurrentIndex(0)
+
         # Populate the manufacturerComboBox with unique manufacturers from the database
         self.populateManufacturers()
 
@@ -57,8 +65,16 @@ class MainWindow(QMainWindow):
             # Get the selected manufacturer
             selected_manufacturer = self.manufacturerComboBox.currentText()
 
+            if selected_manufacturer == "Select manufacturer":
+                self.modelComboBox.clear()
+                self.modelComboBox.addItem("Select model")
+                self.engineSizeComboBox.clear()
+                self.engineSizeComboBox.addItem("Select engine size")
+                return
+
             # Clear the current items in the modelComboBox
             self.modelComboBox.clear()
+            self.modelComboBox.addItem("Select model")
 
             # Connect to the SQLite database
             conn = sqlite3.connect('wheelbearings.db')
@@ -85,8 +101,14 @@ class MainWindow(QMainWindow):
             selected_manufacturer = self.manufacturerComboBox.currentText()
             selected_model = self.modelComboBox.currentText()
 
+            if selected_model == "Select model":
+                self.engineSizeComboBox.clear()
+                self.engineSizeComboBox.addItem("Select engine size")
+                return
+
             # Clear the current items in the engineSizeComboBox
             self.engineSizeComboBox.clear()
+            self.engineSizeComboBox.addItem("Select engine size")
 
             # Connect to the SQLite database
             conn = sqlite3.connect('wheelbearings.db')
