@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
         self.engineSizeComboBox = self.findChild(QComboBox, "engineSizeComboBox")
+        self.markSeriesComboBox = self.findChild(QComboBox, "markSeriesComboBox")
 
         # Set placeholders for the combo boxes
         self.manufacturerComboBox.addItem("Select manufacturer")
@@ -34,6 +35,8 @@ class MainWindow(QMainWindow):
         self.modelComboBox.setCurrentIndex(0)
         self.engineSizeComboBox.addItem("Select engine size")
         self.engineSizeComboBox.setCurrentIndex(0)
+        self.markSeriesComboBox.addItem("Select mark series")
+        self.markSeriesComboBox.setCurrentIndex(0)
 
         # Populate the manufacturerComboBox with unique manufacturers from the database
         self.populateManufacturers()
@@ -41,6 +44,7 @@ class MainWindow(QMainWindow):
         # Connect signals to update the dependent combo boxes
         self.manufacturerComboBox.currentIndexChanged.connect(self.updateModels)
         self.modelComboBox.currentIndexChanged.connect(self.updateEngineSizes)
+        self.engineSizeComboBox.currentIndexChanged.connect(self.updateMarkSeries)
 
     def populateManufacturers(self):
         if self.manufacturerComboBox is not None:
@@ -70,6 +74,8 @@ class MainWindow(QMainWindow):
                 self.modelComboBox.addItem("Select model")
                 self.engineSizeComboBox.clear()
                 self.engineSizeComboBox.addItem("Select engine size")
+                self.markSeriesComboBox.clear()
+                self.markSeriesComboBox.addItem("Select mark series")
                 return
 
             # Clear the current items in the modelComboBox
@@ -104,6 +110,8 @@ class MainWindow(QMainWindow):
             if selected_model == "Select model":
                 self.engineSizeComboBox.clear()
                 self.engineSizeComboBox.addItem("Select engine size")
+                self.markSeriesComboBox.clear()
+                self.markSeriesComboBox.addItem("Select mark series")
                 return
 
             # Clear the current items in the engineSizeComboBox
@@ -124,8 +132,44 @@ class MainWindow(QMainWindow):
 
             # Close the database connection
             conn.close()
+
+            # Trigger update for mark series
+            self.updateMarkSeries()
         else:
             print("Error: QComboBox with objectName 'engineSizeComboBox' not found")
+
+    def updateMarkSeries(self):
+        if self.markSeriesComboBox is not None:
+            # Get the selected manufacturer, model, and engine size
+            selected_manufacturer = self.manufacturerComboBox.currentText()
+            selected_model = self.modelComboBox.currentText()
+            selected_engine_size = self.engineSizeComboBox.currentText()
+
+            if selected_engine_size == "Select engine size":
+                self.markSeriesComboBox.clear()
+                self.markSeriesComboBox.addItem("Select mark series")
+                return
+
+            # Clear the current items in the markSeriesComboBox
+            self.markSeriesComboBox.clear()
+            self.markSeriesComboBox.addItem("Select mark series")
+
+            # Connect to the SQLite database
+            conn = sqlite3.connect('wheelbearings.db')
+            cursor = conn.cursor()
+
+            # Execute a query to get mark series for the selected manufacturer, model, and engine size
+            cursor.execute("SELECT DISTINCT MarkSeries FROM wheelbearing WHERE Manuf = ? AND Model = ? AND EngineSize = ?", 
+                           (selected_manufacturer, selected_model, selected_engine_size))
+            mark_series = [row[0] for row in cursor.fetchall()]
+
+            # Populate the markSeriesComboBox with the retrieved mark series
+            self.markSeriesComboBox.addItems(mark_series)
+
+            # Close the database connection
+            conn.close()
+        else:
+            print("Error: QComboBox with objectName 'markSeriesComboBox' not found")
 
 if __name__ == "__main__":
     # Create an instance of the QApplication
