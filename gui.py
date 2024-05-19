@@ -1,11 +1,8 @@
 import sys
-import os
 import sqlite3
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QComboBox
 from PyQt5 import uic
 
-# Suppress macOS warning about secure coding
-os.environ['QT_MAC_WANTS_LAYER'] = '1'
 
 # Define a class that inherits from QMainWindow
 class MainWindow(QMainWindow):
@@ -26,14 +23,15 @@ class MainWindow(QMainWindow):
         # Set the text of the QLabel to "Hello Rosie"
         self.messageLabel.setText("Hello Rosie")
 
-        # Find the QComboBox by its objectName set in Qt Designer
+        # Find the QComboBox widgets by their objectNames set in Qt Designer
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
+        self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
 
-        # Debugging: Print to check if the QComboBox is found
-        print(f"manufacturerComboBox: {self.manufacturerComboBox}")
-
-        # Populate the QComboBox with unique manufacturers from the database
+        # Populate the manufacturerComboBox with unique manufacturers from the database
         self.populateManufacturers()
+
+        # Connect the signal for manufacturer selection to the update models function
+        self.manufacturerComboBox.currentIndexChanged.connect(self.updateModels)
 
     def populateManufacturers(self):
         if self.manufacturerComboBox is not None:
@@ -53,7 +51,30 @@ class MainWindow(QMainWindow):
         else:
             print("Error: QComboBox with objectName 'manufacturerComboBox' not found")
 
-# Check if the script is run directly (not imported as a module)
+    def updateModels(self):
+        if self.modelComboBox is not None:
+            # Get the selected manufacturer
+            selected_manufacturer = self.manufacturerComboBox.currentText()
+
+            # Clear the current items in the modelComboBox
+            self.modelComboBox.clear()
+
+            # Connect to the SQLite database
+            conn = sqlite3.connect('wheelbearings.db')
+            cursor = conn.cursor()
+
+            # Execute a query to get models for the selected manufacturer
+            cursor.execute("SELECT DISTINCT Model FROM wheelbearing WHERE Manuf = ?", (selected_manufacturer,))
+            models = [row[0] for row in cursor.fetchall()]
+
+            # Populate the modelComboBox with the retrieved models
+            self.modelComboBox.addItems(models)
+
+            # Close the database connection
+            conn.close()
+        else:
+            print("Error: QComboBox with objectName 'modelComboBox' not found")
+
 if __name__ == "__main__":
     # Create an instance of the QApplication
     app = QApplication(sys.argv)
