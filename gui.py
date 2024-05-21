@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QComboBox, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QComboBox, QPushButton, QScrollArea, QVBoxLayout, QWidget
 from PyQt5 import uic
 import database
 
@@ -22,6 +22,17 @@ class MainWindow(QMainWindow):
         self.searchButton = self.findChild(QPushButton, "searchButton")
         self.resetButton = self.findChild(QPushButton, "resetButton")
 
+        self.resultsScrollArea = self.findChild(QScrollArea, "resultsScrollArea")
+
+        # Create a QWidget and set it as the widget for resultsScrollArea
+        self.resultsWidget = QWidget()
+        self.resultsScrollArea.setWidget(self.resultsWidget)
+        self.resultsScrollArea.setWidgetResizable(True)
+
+        # Set a layout for the resultsWidget
+        self.resultsLayout = QVBoxLayout(self.resultsWidget)
+        self.resultsWidget.setLayout(self.resultsLayout)
+
         self.set_placeholders()
         self.populate_manufacturers()
 
@@ -30,6 +41,7 @@ class MainWindow(QMainWindow):
         self.engineSizeComboBox.currentIndexChanged.connect(self.update_mark_series)
         self.markSeriesComboBox.currentIndexChanged.connect(self.update_drive_types)
         self.driveTypeComboBox.currentIndexChanged.connect(self.update_positions)
+        self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
 
     def set_placeholders(self):
@@ -126,3 +138,36 @@ class MainWindow(QMainWindow):
         self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
         self.clear_combo_box(self.positionComboBox, "Select position")
         self.populate_manufacturers()
+
+    def search_parts(self):
+        manufacturer = self.manufacturerComboBox.currentText()
+        model = self.modelComboBox.currentText()
+        engine_size = self.engineSizeComboBox.currentText()
+        mark_series = self.markSeriesComboBox.currentText()
+        drive_type = self.driveTypeComboBox.currentText()
+        position = self.positionComboBox.currentText()
+
+        if "Select" in (manufacturer, model, engine_size, mark_series, drive_type, position):
+            self.messageLabel.setText("Please select all criteria.")
+            return
+
+        parts = database.get_parts('wheelbearings.db', manufacturer, model, engine_size, mark_series, drive_type, position)
+        
+        self.display_results(parts)
+
+    def display_results(self, parts):
+        layout = self.resultsLayout
+        
+        # Clear any previous results
+        for i in reversed(range(layout.count())):
+            widgetToRemove = layout.itemAt(i).widget()
+            if widgetToRemove:
+                layout.removeWidget(widgetToRemove)
+                widgetToRemove.setParent(None)
+
+        # Add new results
+        for part in parts:
+            part_number, part_size = part
+            part_label = QLabel(f"Part Number: {part_number}, Part Size: {part_size}")
+            layout.addWidget(part_label)
+
