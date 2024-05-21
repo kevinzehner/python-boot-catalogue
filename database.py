@@ -51,3 +51,15 @@ def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_
     positions = [row[0] for row in cursor.fetchall()]
     conn.close()
     return positions
+
+def get_parts(db_path, manufacturer, model, engine_size, mark_series, drive_type, position):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    query = """
+        SELECT PartNumber, PartSize FROM wheelbearing
+        WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? AND TransDrive = ? AND MPos = ?
+    """
+    cursor.execute(query, (manufacturer, model, engine_size, mark_series, drive_type, position))
+    parts = cursor.fetchall()
+    conn.close()
+    return parts
