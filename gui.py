@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QComboBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QComboBox, QPushButton
 from PyQt5 import uic
 import database
 
@@ -19,6 +19,8 @@ class MainWindow(QMainWindow):
         self.markSeriesComboBox = self.findChild(QComboBox, "markSeriesComboBox")
         self.driveTypeComboBox = self.findChild(QComboBox, "driveTypeComboBox")
         self.positionComboBox = self.findChild(QComboBox, "positionComboBox")
+        self.searchButton = self.findChild(QPushButton, "searchButton")
+        self.resetButton = self.findChild(QPushButton, "resetButton")
 
         self.set_placeholders()
         self.populate_manufacturers()
@@ -28,6 +30,7 @@ class MainWindow(QMainWindow):
         self.engineSizeComboBox.currentIndexChanged.connect(self.update_mark_series)
         self.markSeriesComboBox.currentIndexChanged.connect(self.update_drive_types)
         self.driveTypeComboBox.currentIndexChanged.connect(self.update_positions)
+        self.resetButton.clicked.connect(self.reset_dropdowns)
 
     def set_placeholders(self):
         self.manufacturerComboBox.addItem("Select manufacturer")
@@ -114,3 +117,12 @@ class MainWindow(QMainWindow):
     def clear_combo_box(self, combo_box, placeholder):
         combo_box.clear()
         combo_box.addItem(placeholder)
+
+    def reset_dropdowns(self):
+        self.clear_combo_box(self.manufacturerComboBox, "Select manufacturer")
+        self.clear_combo_box(self.modelComboBox, "Select model")
+        self.clear_combo_box(self.engineSizeComboBox, "Select engine size")
+        self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
+        self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
+        self.clear_combo_box(self.positionComboBox, "Select position")
+        self.populate_manufacturers()
