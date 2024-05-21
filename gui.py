@@ -19,8 +19,8 @@ class MainWindow(QMainWindow):
         # Find the QLabel widget by its objectName set in Qt Designer
         self.messageLabel = self.findChild(QLabel, "messageLabel")
 
-        # Set the text of the QLabel to "Hello Rosie"
-        self.messageLabel.setText("Hello Rosie")
+
+        self.messageLabel.setText("Wheel Bearing Catalogue")
 
         # Find the QComboBox widgets by their objectNames set in Qt Designer
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
