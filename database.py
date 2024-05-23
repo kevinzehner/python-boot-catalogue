@@ -28,7 +28,7 @@ def get_engine_sizes(db_path, manufacturer, model):
 def get_mark_series(db_path, manufacturer, model, engine_size):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT MarkSeries FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ?", 
+    cursor.execute("SELECT DISTINCT mark_series FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ?", 
                    (manufacturer, model, engine_size))
     mark_series = [row[0] for row in cursor.fetchall()]
     conn.close()
@@ -37,7 +37,7 @@ def get_mark_series(db_path, manufacturer, model, engine_size):
 def get_drive_types(db_path, manufacturer, model, engine_size, mark_series):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT TransDrive FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ?", 
+    cursor.execute("SELECT DISTINCT TRWDansDRWDive FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ?", 
                    (manufacturer, model, engine_size, mark_series))
     drive_types = [row[0] for row in cursor.fetchall()]
     conn.close()
@@ -46,7 +46,7 @@ def get_drive_types(db_path, manufacturer, model, engine_size, mark_series):
 def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_type):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT MPos FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? AND TransDrive = ?", 
+    cursor.execute("SELECT DISTINCT MPos FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ? AND TRWDansDRWDive = ?", 
                    (manufacturer, model, engine_size, mark_series, drive_type))
     positions = [row[0] for row in cursor.fetchall()]
     conn.close()
@@ -56,8 +56,8 @@ def get_parts(db_path, manufacturer, model, engine_size, mark_series, drive_type
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = """
-        SELECT PartNumber, PartSize FROM wheelbearing_LSODS
-        WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? AND TransDrive = ? AND MPos = ?
+        SELECT LSODS_PartNumber, Bearing_1_Size FROM wheelbearing_LSODS
+        WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ? AND TRWDansDRWDive = ? AND MPos = ?
     """
     cursor.execute(query, (manufacturer, model, engine_size, mark_series, drive_type, position))
     parts = cursor.fetchall()
