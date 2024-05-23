@@ -138,6 +138,12 @@ class MainWindow(QMainWindow):
         self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
         self.clear_combo_box(self.positionComboBox, "Select position")
         self.populate_manufacturers()
+        layout = self.resultsLayout
+        for i in reversed(range(layout.count())):
+            widgetToRemove = layout.itemAt(i).widget()
+            if widgetToRemove:
+                layout.removeWidget(widgetToRemove)
+                widgetToRemove.setParent(None)
 
     def search_parts(self):
         manufacturer = self.manufacturerComboBox.currentText()
