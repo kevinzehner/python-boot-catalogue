@@ -1,7 +1,19 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QComboBox, QPushButton, QScrollArea, QVBoxLayout, QWidget
+import os
+from PyQt5.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QLabel,
+    QComboBox,
+    QPushButton,
+    QScrollArea,
+    QVBoxLayout,
+    QWidget,
+    QHBoxLayout,
+)
+from PyQt5.QtGui import QPixmap
 from PyQt5 import uic
 import database
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -59,7 +71,7 @@ class MainWindow(QMainWindow):
         self.positionComboBox.setCurrentIndex(0)
 
     def populate_manufacturers(self):
-        manufacturers = database.get_unique_manufacturers('wheelbearings_LSODS.db')
+        manufacturers = database.get_unique_manufacturers("wheelbearings_LSODS.db")
         self.manufacturerComboBox.addItems(manufacturers)
 
     def update_models(self):
@@ -71,7 +83,7 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
-        models = database.get_models('wheelbearings_LSODS.db', selected_manufacturer)
+        models = database.get_models("wheelbearings_LSODS.db", selected_manufacturer)
         self.modelComboBox.addItems(models)
         self.update_engine_sizes()
 
@@ -84,7 +96,9 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
-        engine_sizes = database.get_engine_sizes('wheelbearings_LSODS.db', selected_manufacturer, selected_model)
+        engine_sizes = database.get_engine_sizes(
+            "wheelbearings_LSODS.db", selected_manufacturer, selected_model
+        )
         self.engineSizeComboBox.addItems(engine_sizes)
         self.update_mark_series()
 
@@ -97,7 +111,12 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
-        mark_series = database.get_mark_series('wheelbearings_LSODS.db', selected_manufacturer, selected_model, selected_engine_size)
+        mark_series = database.get_mark_series(
+            "wheelbearings_LSODS.db",
+            selected_manufacturer,
+            selected_model,
+            selected_engine_size,
+        )
         self.markSeriesComboBox.addItems(mark_series)
         self.update_drive_types()
 
@@ -110,7 +129,13 @@ class MainWindow(QMainWindow):
         if selected_mark_series == "Select mark series":
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
-        drive_types = database.get_drive_types('wheelbearings_LSODS.db', selected_manufacturer, selected_model, selected_engine_size, selected_mark_series)
+        drive_types = database.get_drive_types(
+            "wheelbearings_LSODS.db",
+            selected_manufacturer,
+            selected_model,
+            selected_engine_size,
+            selected_mark_series,
+        )
         self.driveTypeComboBox.addItems(drive_types)
         self.update_positions()
 
@@ -123,7 +148,14 @@ class MainWindow(QMainWindow):
         selected_drive_type = self.driveTypeComboBox.currentText()
         if selected_drive_type == "Select drive type":
             return
-        positions = database.get_positions('wheelbearings_LSODS.db', selected_manufacturer, selected_model, selected_engine_size, selected_mark_series, selected_drive_type)
+        positions = database.get_positions(
+            "wheelbearings_LSODS.db",
+            selected_manufacturer,
+            selected_model,
+            selected_engine_size,
+            selected_mark_series,
+            selected_drive_type,
+        )
         self.positionComboBox.addItems(positions)
 
     def clear_combo_box(self, combo_box, placeholder):
@@ -153,17 +185,32 @@ class MainWindow(QMainWindow):
         drive_type = self.driveTypeComboBox.currentText()
         position = self.positionComboBox.currentText()
 
-        if "Select" in (manufacturer, model, engine_size, mark_series, drive_type, position):
+        if "Select" in (
+            manufacturer,
+            model,
+            engine_size,
+            mark_series,
+            drive_type,
+            position,
+        ):
             self.messageLabel.setText("Please select all criteria.")
             return
 
-        parts = database.get_parts('wheelbearings_LSODS.db', manufacturer, model, engine_size, mark_series, drive_type, position)
-        
+        parts = database.get_parts(
+            "wheelbearings_LSODS.db",
+            manufacturer,
+            model,
+            engine_size,
+            mark_series,
+            drive_type,
+            position,
+        )
+
         self.display_results(parts)
 
     def display_results(self, parts):
         layout = self.resultsLayout
-        
+
         # Clear any previous results
         for i in reversed(range(layout.count())):
             widgetToRemove = layout.itemAt(i).widget()
@@ -173,7 +220,23 @@ class MainWindow(QMainWindow):
 
         # Add new results
         for part in parts:
-            part_number, part_size = part
-            part_label = QLabel(f"Part Number: {part_number}, Part Size: {part_size}")
-            layout.addWidget(part_label)
+            part_number, part_size, image_file = part
 
+            # Create a layout to hold the image and text
+            part_layout = QHBoxLayout()
+
+            # Load and display the image
+            image_label = QLabel()
+            image_path = os.path.join(
+                "wheelbearing-img2", image_file.replace(".jpeg", ".jpg")
+            )
+            pixmap = QPixmap(image_path)
+            pixmap = pixmap.scaled(100, 100)  # Adjust the size as needed
+            image_label.setPixmap(pixmap)
+            part_layout.addWidget(image_label)
+
+            # Display the part details
+            part_label = QLabel(f"Part Number: {part_number}, Part Size: {part_size}")
+            part_layout.addWidget(part_label)
+
+            layout.addLayout(part_layout)
