@@ -56,7 +56,7 @@ def get_parts(db_path, manufacturer, model, engine_size, mark_series, drive_type
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = """
-        SELECT LSODS_PartNumber, Bearing_1_Size FROM wheelbearing_LSODS
+        SELECT DISTINCT LSODS_PartNumber, Bearing_1_Size FROM wheelbearing_LSODS
         WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ? AND TRWDansDRWDive = ? AND MPos = ?
     """
     cursor.execute(query, (manufacturer, model, engine_size, mark_series, drive_type, position))
