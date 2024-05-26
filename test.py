@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlite3
 
+
 def update_column_name(conn):
     cursor = conn.cursor()
 
@@ -8,7 +9,8 @@ def update_column_name(conn):
     cursor.execute("DROP TABLE IF EXISTS wheelbearing_LSODS_new")
 
     # Step 1: Create a new table with the updated schema
-    cursor.execute("""
+    cursor.execute(
+        """
     CREATE TABLE wheelbearing_LSODS_new (
         Manuf TEXT,
         Model TEXT,
@@ -17,16 +19,20 @@ def update_column_name(conn):
         TRWDansDRWDive TEXT,
         MPos TEXT,
         LSODS_PartNumber TEXT,
-        Bearing_1_Size TEXT
+        Bearing_1_Size TEXT,
+        jpeg TEXT
     )
-    """)
+    """
+    )
 
     # Step 2: Copy data from the old table to the new table
-    cursor.execute("""
-    INSERT INTO wheelbearing_LSODS_new (Manuf, Model, EngineSize, mark_series, TRWDansDRWDive, MPos, LSODS_PartNumber, Bearing_1_Size)
-    SELECT Manuf, Model, EngineSize, mark_series, TRWDansDRWDive, MPos, [LSODS PartNumber] AS LSODS_PartNumber, Bearing_1_Size
+    cursor.execute(
+        """
+    INSERT INTO wheelbearing_LSODS_new (Manuf, Model, EngineSize, mark_series, TRWDansDRWDive, MPos, LSODS_PartNumber, Bearing_1_Size, jpeg)
+    SELECT Manuf, Model, EngineSize, mark_series, TRWDansDRWDive, MPos, [LSODS PartNumber] AS LSODS_PartNumber, Bearing_1_Size, jpeg
     FROM wheelbearing_LSODS
-    """)
+    """
+    )
 
     # Step 3: Drop the old table
     cursor.execute("DROP TABLE wheelbearing_LSODS")
@@ -35,6 +41,7 @@ def update_column_name(conn):
     cursor.execute("ALTER TABLE wheelbearing_LSODS_new RENAME TO wheelbearing_LSODS")
 
     conn.commit()
+
 
 try:
     csv_file_path = "wheelbearing_rows.csv"

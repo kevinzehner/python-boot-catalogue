@@ -9,8 +9,10 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QHBoxLayout,
+    QGridLayout,
 )
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt  # Import the Qt namespace
 from PyQt5 import uic
 import database
 
@@ -42,7 +44,7 @@ class MainWindow(QMainWindow):
         self.resultsScrollArea.setWidgetResizable(True)
 
         # Set a layout for the resultsWidget
-        self.resultsLayout = QVBoxLayout(self.resultsWidget)
+        self.resultsLayout = QGridLayout(self.resultsWidget)
         self.resultsWidget.setLayout(self.resultsLayout)
 
         self.set_placeholders()
@@ -185,26 +187,18 @@ class MainWindow(QMainWindow):
         drive_type = self.driveTypeComboBox.currentText()
         position = self.positionComboBox.currentText()
 
-        if "Select" in (
-            manufacturer,
-            model,
-            engine_size,
-            mark_series,
-            drive_type,
-            position,
-        ):
-            self.messageLabel.setText("Please select all criteria.")
-            return
+        criteria = {
+            "manufacturer": (
+                manufacturer if manufacturer != "Select manufacturer" else None
+            ),
+            "model": model if model != "Select model" else None,
+            "engine_size": engine_size if engine_size != "Select engine size" else None,
+            "mark_series": mark_series if mark_series != "Select mark series" else None,
+            "drive_type": drive_type if drive_type != "Select drive type" else None,
+            "position": position if position != "Select position" else None,
+        }
 
-        parts = database.get_parts(
-            "wheelbearings_LSODS.db",
-            manufacturer,
-            model,
-            engine_size,
-            mark_series,
-            drive_type,
-            position,
-        )
+        parts = database.get_parts("wheelbearings_LSODS.db", criteria)
 
         self.display_results(parts)
 
@@ -219,11 +213,13 @@ class MainWindow(QMainWindow):
                 widgetToRemove.setParent(None)
 
         # Add new results
+        row = 0
+        col = 0
         for part in parts:
             part_number, part_size, image_file = part
 
             # Create a layout to hold the image and text
-            part_layout = QHBoxLayout()
+            part_layout = QVBoxLayout()
 
             # Load and display the image
             image_label = QLabel()
@@ -231,12 +227,20 @@ class MainWindow(QMainWindow):
                 "wheelbearing-img2", image_file.replace(".jpeg", ".jpg")
             )
             pixmap = QPixmap(image_path)
-            pixmap = pixmap.scaled(100, 100)  # Adjust the size as needed
+            pixmap = pixmap.scaled(
+                100, 100, Qt.KeepAspectRatio
+            )  # Adjust the size as needed
             image_label.setPixmap(pixmap)
             part_layout.addWidget(image_label)
 
             # Display the part details
-            part_label = QLabel(f"Part Number: {part_number}, Part Size: {part_size}")
+            part_label = QLabel(f"Part Number: {part_number}\nPart Size: {part_size}")
             part_layout.addWidget(part_label)
 
-            layout.addLayout(part_layout)
+            layout.addLayout(part_layout, row, col)
+            col += 1
+            if col >= 3:  # Change the number of columns as needed
+                col = 0
+                row += 1
+
+        self.resultsWidget.setLayout(layout)
