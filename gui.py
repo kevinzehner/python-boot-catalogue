@@ -165,6 +165,7 @@ class MainWindow(QMainWindow):
         combo_box.addItem(placeholder)
 
     def reset_dropdowns(self):
+        # Reset the dropdowns
         self.clear_combo_box(self.manufacturerComboBox, "Select manufacturer")
         self.clear_combo_box(self.modelComboBox, "Select model")
         self.clear_combo_box(self.engineSizeComboBox, "Select engine size")
@@ -172,6 +173,8 @@ class MainWindow(QMainWindow):
         self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
         self.clear_combo_box(self.positionComboBox, "Select position")
         self.populate_manufacturers()
+
+        # Clear the results layout
         layout = self.resultsLayout
         for i in reversed(range(layout.count())):
             widgetToRemove = layout.itemAt(i).widget()
@@ -234,7 +237,7 @@ class MainWindow(QMainWindow):
             part_layout.addWidget(image_label)
 
             # Display the part details
-            part_label = QLabel(f"Part Number: {part_number}\nPart Size: {part_size}")
+            part_label = QLabel(f"Part Number: {part_number}")
             part_layout.addWidget(part_label)
 
             layout.addLayout(part_layout, row, col)
@@ -244,3 +247,12 @@ class MainWindow(QMainWindow):
                 row += 1
 
         self.resultsWidget.setLayout(layout)
+
+
+if __name__ == "__main__":
+    import sys
+
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec_())
