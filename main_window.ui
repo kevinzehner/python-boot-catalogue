@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1440</width>
+    <height>847</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,16 +25,6 @@
     </property>
     <property name="text">
      <string>Wheelbearing catalogue</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="manufacturerComboBox">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>130</y>
-      <width>251</width>
-      <height>51</height>
-     </rect>
     </property>
    </widget>
    <widget class="QComboBox" name="modelComboBox">
@@ -116,10 +106,10 @@
    <widget class="QScrollArea" name="resultsScrollArea">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>40</y>
-      <width>1211</width>
-      <height>971</height>
+      <x>630</x>
+      <y>80</y>
+      <width>791</width>
+      <height>691</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -130,11 +120,21 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1209</width>
-       <height>969</height>
+       <width>789</width>
+       <height>689</height>
       </rect>
      </property>
     </widget>
+   </widget>
+   <widget class="QComboBox" name="manufacturerComboBox">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>130</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -142,7 +142,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1920</width>
+     <width>1440</width>
      <height>24</height>
     </rect>
    </property>

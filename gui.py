@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
     QGridLayout,
 )
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt  # Import the Qt namespace
+from PyQt5.QtCore import Qt
 from PyQt5 import uic
 import database
 
@@ -165,6 +165,7 @@ class MainWindow(QMainWindow):
         combo_box.addItem(placeholder)
 
     def reset_dropdowns(self):
+        print("Resetting dropdowns and clearing results")  # Debugging
         # Reset the dropdowns
         self.clear_combo_box(self.manufacturerComboBox, "Select manufacturer")
         self.clear_combo_box(self.modelComboBox, "Select model")
@@ -175,12 +176,20 @@ class MainWindow(QMainWindow):
         self.populate_manufacturers()
 
         # Clear the results layout
+        self.clear_results()
+
+    def clear_results(self):
         layout = self.resultsLayout
-        for i in reversed(range(layout.count())):
-            widgetToRemove = layout.itemAt(i).widget()
-            if widgetToRemove:
-                layout.removeWidget(widgetToRemove)
-                widgetToRemove.setParent(None)
+        count = layout.count()
+
+        while count > 0:
+            child = layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+            count -= 1
+
+        self.resultsWidget.update()
+        self.resultsScrollArea.update()
 
     def search_parts(self):
         manufacturer = self.manufacturerComboBox.currentText()
@@ -206,14 +215,8 @@ class MainWindow(QMainWindow):
         self.display_results(parts)
 
     def display_results(self, parts):
+        self.clear_results()
         layout = self.resultsLayout
-
-        # Clear any previous results
-        for i in reversed(range(layout.count())):
-            widgetToRemove = layout.itemAt(i).widget()
-            if widgetToRemove:
-                layout.removeWidget(widgetToRemove)
-                widgetToRemove.setParent(None)
 
         # Add new results
         row = 0
@@ -229,6 +232,9 @@ class MainWindow(QMainWindow):
             image_path = os.path.join(
                 "wheelbearing-img2", image_file.replace(".jpeg", ".jpg")
             )
+            if not os.path.exists(image_path):
+                image_path = os.path.join("wheelbearing-img2", "generic.jpg")
+
             pixmap = QPixmap(image_path)
             pixmap = pixmap.scaled(
                 100, 100, Qt.KeepAspectRatio
@@ -237,22 +243,18 @@ class MainWindow(QMainWindow):
             part_layout.addWidget(image_label)
 
             # Display the part details
-            part_label = QLabel(f"Part Number: {part_number}")
+            part_label = QLabel(f"Part Number: {part_number}, Part Size: {part_size}")
             part_layout.addWidget(part_label)
 
-            layout.addLayout(part_layout, row, col)
+            # Create a widget to hold the part layout and add it to the grid layout
+            part_widget = QWidget()
+            part_widget.setLayout(part_layout)
+            layout.addWidget(part_widget, row, col)
+
             col += 1
             if col >= 3:  # Change the number of columns as needed
                 col = 0
                 row += 1
 
-        self.resultsWidget.setLayout(layout)
-
-
-if __name__ == "__main__":
-    import sys
-
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
+        self.resultsWidget.update()
+        self.resultsScrollArea.update()
