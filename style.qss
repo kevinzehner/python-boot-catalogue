@@ -1,0 +1,36 @@
+/* style.qss */
+QMainWindow {
+    background-color: white;
+}
+
+QLabel {
+    font-size: 14px;
+    color: #333;
+}
+
+QComboBox {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #000080;
+
+}
+
+QPushButton {
+    background-color: #FFFF00;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+QPushButton:hover {
+    background-color: ##FFFF00;
+}
+
+QScrollArea {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #000080;
+    color:#fff;
+}

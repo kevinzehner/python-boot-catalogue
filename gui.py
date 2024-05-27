@@ -165,7 +165,6 @@ class MainWindow(QMainWindow):
         combo_box.addItem(placeholder)
 
     def reset_dropdowns(self):
-        print("Resetting dropdowns and clearing results")  # Debugging
         # Reset the dropdowns
         self.clear_combo_box(self.manufacturerComboBox, "Select manufacturer")
         self.clear_combo_box(self.modelComboBox, "Select model")
