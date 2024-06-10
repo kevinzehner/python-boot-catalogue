@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QGridLayout,
+    QSizePolicy,
 )
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -46,6 +47,9 @@ class MainWindow(QMainWindow):
         # Set a layout for the resultsWidget
         self.resultsLayout = QGridLayout(self.resultsWidget)
         self.resultsWidget.setLayout(self.resultsLayout)
+
+        # Set size policy to ensure the widget expands properly
+        self.resultsWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         self.set_placeholders()
         self.populate_manufacturers()
@@ -218,7 +222,7 @@ class MainWindow(QMainWindow):
         layout = self.resultsLayout
 
         # Define a consistent size for each part widget
-        widget_width = 300
+        widget_width = 350
         widget_height = 200
 
         row = 0
@@ -259,12 +263,15 @@ class MainWindow(QMainWindow):
             part_widget = QWidget()
             part_widget.setLayout(part_layout)
             part_widget.setFixedSize(widget_width, widget_height)
-            layout.addWidget(part_widget, row, col)
+            layout.addWidget(
+                part_widget, row, col, alignment=Qt.AlignTop | Qt.AlignLeft
+            )  # Align to top-left
 
             col += 1
             if col >= 3:  # Change the number of columns as needed
                 col = 0
                 row += 1
 
+        self.resultsWidget.setLayout(layout)
         self.resultsWidget.update()
         self.resultsScrollArea.update()

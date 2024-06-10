@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1440</width>
-    <height>847</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QLabel" name="messageLabel">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>60</y>
-      <width>181</width>
-      <height>20</height>
+      <x>270</x>
+      <y>40</y>
+      <width>161</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -31,8 +31,8 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>130</y>
-      <width>251</width>
+      <y>150</y>
+      <width>301</width>
       <height>51</height>
      </rect>
     </property>
@@ -40,9 +40,9 @@
    <widget class="QComboBox" name="engineSizeComboBox">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>20</x>
       <y>190</y>
-      <width>251</width>
+      <width>291</width>
       <height>51</height>
      </rect>
     </property>
@@ -52,7 +52,7 @@
      <rect>
       <x>350</x>
       <y>190</y>
-      <width>251</width>
+      <width>301</width>
       <height>51</height>
      </rect>
     </property>
@@ -60,9 +60,9 @@
    <widget class="QComboBox" name="driveTypeComboBox">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>260</y>
-      <width>251</width>
+      <x>20</x>
+      <y>230</y>
+      <width>291</width>
       <height>51</height>
      </rect>
     </property>
@@ -71,8 +71,8 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>260</y>
-      <width>251</width>
+      <y>230</y>
+      <width>301</width>
       <height>51</height>
      </rect>
     </property>
@@ -81,9 +81,9 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>370</y>
-      <width>113</width>
-      <height>32</height>
+      <y>351</y>
+      <width>141</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -94,9 +94,9 @@
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>370</y>
-      <width>113</width>
-      <height>32</height>
+      <y>350</y>
+      <width>141</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -106,10 +106,10 @@
    <widget class="QScrollArea" name="resultsScrollArea">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>140</y>
-      <width>791</width>
-      <height>631</height>
+      <x>740</x>
+      <y>80</y>
+      <width>1121</width>
+      <height>901</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -120,8 +120,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>789</width>
-       <height>629</height>
+       <width>1119</width>
+       <height>899</height>
       </rect>
      </property>
     </widget>
@@ -129,9 +129,9 @@
    <widget class="QComboBox" name="manufacturerComboBox">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>130</y>
-      <width>251</width>
+      <x>20</x>
+      <y>150</y>
+      <width>291</width>
       <height>51</height>
      </rect>
     </property>
@@ -142,7 +142,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1440</width>
+     <width>1920</width>
      <height>24</height>
     </rect>
    </property>
