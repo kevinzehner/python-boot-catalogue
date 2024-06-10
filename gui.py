@@ -26,7 +26,6 @@ class MainWindow(QMainWindow):
 
     def initializeUI(self):
         self.messageLabel = self.findChild(QLabel, "messageLabel")
-        self.messageLabel.setText("Wheel Bearing Catalogue")
 
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
@@ -51,6 +50,16 @@ class MainWindow(QMainWindow):
         # Set size policy to ensure the widget expands properly
         self.resultsWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
+        # Find the new portrait labels
+        self.imageLabel_1 = self.findChild(QLabel, "imageLabel_1")
+        self.imageLabel_2 = self.findChild(QLabel, "imageLabel_2")
+
+        # Set placeholder images for portrait labels
+        self.setPortraitImages()
+
+        # Set the logo image to the messageLabel
+        self.setLogoImage()
+
         self.set_placeholders()
         self.populate_manufacturers()
 
@@ -61,6 +70,35 @@ class MainWindow(QMainWindow):
         self.driveTypeComboBox.currentIndexChanged.connect(self.update_positions)
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
+
+    def setPortraitImages(self):
+        # Set the image for the first portrait label
+        pixmap1 = QPixmap(os.path.join("main-images", "main2.JPG"))
+        self.imageLabel_1.setPixmap(
+            pixmap1.scaled(
+                self.imageLabel_1.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+            )
+        )
+
+    def setLogoImage(self):
+        # Set the logo image to the messageLabel
+        logo_path = os.path.join(
+            "main-images", "title.png"
+        )  # Replace with the actual logo image path
+        pixmap = QPixmap(logo_path)
+        self.messageLabel.setPixmap(
+            pixmap.scaled(
+                self.messageLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+            )
+        )
+
+        # Set the image for the second portrait label
+        pixmap2 = QPixmap(os.path.join("main-images", "main4.JPG"))
+        self.imageLabel_2.setPixmap(
+            pixmap2.scaled(
+                self.imageLabel_2.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+            )
+        )
 
     def set_placeholders(self):
         self.manufacturerComboBox.addItem("Select manufacturer")
