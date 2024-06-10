@@ -217,7 +217,10 @@ class MainWindow(QMainWindow):
         self.clear_results()
         layout = self.resultsLayout
 
-        # Add new results
+        # Define a consistent size for each part widget
+        widget_width = 300
+        widget_height = 200
+
         row = 0
         col = 0
         for part in parts:
@@ -239,15 +242,23 @@ class MainWindow(QMainWindow):
                 100, 100, Qt.KeepAspectRatio
             )  # Adjust the size as needed
             image_label.setPixmap(pixmap)
+            image_label.setAlignment(Qt.AlignCenter)
             part_layout.addWidget(image_label)
 
-            # Display the part details
-            part_label = QLabel(f"Part Number: {part_number}, Part Size: {part_size}")
-            part_layout.addWidget(part_label)
+            # Display the part number
+            part_number_label = QLabel(f"Part Number: {part_number}")
+            part_number_label.setAlignment(Qt.AlignCenter)
+            part_layout.addWidget(part_number_label)
+
+            # Display the part size
+            part_size_label = QLabel(f"Part Size: {part_size}")
+            part_size_label.setAlignment(Qt.AlignCenter)
+            part_layout.addWidget(part_size_label)
 
             # Create a widget to hold the part layout and add it to the grid layout
             part_widget = QWidget()
             part_widget.setLayout(part_layout)
+            part_widget.setFixedSize(widget_width, widget_height)
             layout.addWidget(part_widget, row, col)
 
             col += 1
