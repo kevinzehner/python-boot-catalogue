@@ -27,6 +27,20 @@ class MainWindow(QMainWindow):
     def initializeUI(self):
         self.messageLabel = self.findChild(QLabel, "messageLabel")
 
+        # Find the instruction label and set its text with HTML formatting
+        self.instructionLabel = self.findChild(QLabel, "instructionLabel")
+        if self.instructionLabel is not None:
+            self.instructionLabel.setText(
+                "Please select the manufacturer, model, engine size, mark series, drive type, and position to search for wheel bearings."
+            )
+            # Alternatively, you can use HTML formatting to ensure it wraps correctly
+            self.instructionLabel.setText(
+                "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
+                "drive type, and position to search for wheel bearings.</p></body></html>"
+            )
+        else:
+            print("instructionLabel not found")
+
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
         self.engineSizeComboBox = self.findChild(QComboBox, "engineSizeComboBox")
@@ -70,6 +84,16 @@ class MainWindow(QMainWindow):
         self.driveTypeComboBox.currentIndexChanged.connect(self.update_positions)
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
+
+        # Set fixed size for the buttons to ensure they are the same size
+        button_width = 100
+        button_height = 30
+        self.searchButton.setFixedSize(button_width, button_height)
+        self.resetButton.setFixedSize(button_width, button_height)
+
+        # Styles
+        self.searchButton.setStyleSheet("background-color: #fddb03; color: black;")
+        self.resetButton.setStyleSheet("background-color: #233074;")
 
     def setPortraitImages(self):
         # Set the image for the first portrait label
