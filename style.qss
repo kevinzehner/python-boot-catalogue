@@ -1,0 +1,54 @@
+/* style.qss */
+
+/* General Styles */
+QWidget {
+    font-family: Arial;
+    font-size: 14pt;
+}
+
+QLabel#messageLabel {
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+QLabel#instructionLabel {
+    font-size: 14pt;
+    font-weight: regular;
+}
+
+/* ComboBox Styles */
+QComboBox {
+   
+    font-size: 12pt;
+}
+
+/* Button Styles */
+QPushButton {
+    font-size: 14pt;
+    font-weight: bold;
+    height: 30px;
+    width: 100px;
+}
+
+QPushButton#searchButton {
+    background-color: #fddb03;
+    color: black;
+  
+}
+
+QPushButton#resetButton {
+    background-color: #233074;
+    color: white;
+
+}
+
+/* Result Part Styles */
+QLabel#partNumberLabel {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+QLabel#partSizeLabel {
+    font-size: 14pt;
+    font-weight: regular;
+}

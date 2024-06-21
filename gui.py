@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QSizePolicy,
 )
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
 import database
@@ -24,16 +24,17 @@ class MainWindow(QMainWindow):
         uic.loadUi("main_window.ui", self)
         self.initializeUI()
 
+        # Load the stylesheet
+        self.loadStylesheet("style.qss")
+
+    def loadStylesheet(self, file_name):
+        with open(file_name, "r") as file:
+            self.setStyleSheet(file.read())
+
     def initializeUI(self):
         self.messageLabel = self.findChild(QLabel, "messageLabel")
-
-        # Find the instruction label and set its text with HTML formatting
         self.instructionLabel = self.findChild(QLabel, "instructionLabel")
         if self.instructionLabel is not None:
-            self.instructionLabel.setText(
-                "Please select the manufacturer, model, engine size, mark series, drive type, and position to search for wheel bearings."
-            )
-            # Alternatively, you can use HTML formatting to ensure it wraps correctly
             self.instructionLabel.setText(
                 "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
                 "drive type, and position to search for wheel bearings.</p></body></html>"
@@ -84,16 +85,6 @@ class MainWindow(QMainWindow):
         self.driveTypeComboBox.currentIndexChanged.connect(self.update_positions)
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
-
-        # Set fixed size for the buttons to ensure they are the same size
-        button_width = 100
-        button_height = 30
-        self.searchButton.setFixedSize(button_width, button_height)
-        self.resetButton.setFixedSize(button_width, button_height)
-
-        # Styles
-        self.searchButton.setStyleSheet("background-color: #fddb03; color: black;")
-        self.resetButton.setStyleSheet("background-color: #233074;")
 
     def setPortraitImages(self):
         # Set the image for the first portrait label
@@ -301,6 +292,9 @@ class MainWindow(QMainWindow):
                 "wheelbearing-img2", image_file.replace(".jpeg", ".jpg")
             )
             if not os.path.exists(image_path):
+                print(
+                    f"Image missing for part number: {part_number}"
+                )  # Log missing images
                 image_path = os.path.join("wheelbearing-img2", "generic.jpg")
 
             pixmap = QPixmap(image_path)
@@ -314,11 +308,13 @@ class MainWindow(QMainWindow):
             # Display the part number
             part_number_label = QLabel(f"Part Number: {part_number}")
             part_number_label.setAlignment(Qt.AlignCenter)
+            part_number_label.setObjectName("partNumberLabel")
             part_layout.addWidget(part_number_label)
 
             # Display the part size
             part_size_label = QLabel(f"Part Size: {part_size}")
             part_size_label.setAlignment(Qt.AlignCenter)
+            part_size_label.setObjectName("partSizeLabel")
             part_layout.addWidget(part_size_label)
 
             # Create a widget to hold the part layout and add it to the grid layout
@@ -337,3 +333,10 @@ class MainWindow(QMainWindow):
         self.resultsWidget.setLayout(layout)
         self.resultsWidget.update()
         self.resultsScrollArea.update()
+
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    app.exec_()
