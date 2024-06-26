@@ -38,7 +38,7 @@ def get_mark_series(db_path, manufacturer, model, engine_size):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT mark_series FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? ORDER BY mark_series ASC",
+        "SELECT DISTINCT MarkSeries FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? ORDER BY MarkSeries ASC",
         (manufacturer, model, engine_size),
     )
     mark_series = [row[0] for row in cursor.fetchall()]
@@ -50,7 +50,7 @@ def get_drive_types(db_path, manufacturer, model, engine_size, mark_series):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT TRWDansDRWDive FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ? ORDER BY TRWDansDRWDive ASC",
+        "SELECT DISTINCT TRWDansDRWDive FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? ORDER BY TRWDansDRWDive ASC",
         (manufacturer, model, engine_size, mark_series),
     )
     drive_types = [row[0] for row in cursor.fetchall()]
@@ -62,7 +62,7 @@ def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT MPos FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ? AND TRWDansDRWDive = ? ORDER BY MPos ASC",
+        "SELECT DISTINCT MPos FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? AND TRWDansDRWDive = ? ORDER BY MPos ASC",
         (manufacturer, model, engine_size, mark_series, drive_type),
     )
     positions = [row[0] for row in cursor.fetchall()]
@@ -84,7 +84,7 @@ def get_parts(db_path, criteria):
         query += " AND EngineSize = ?"
         params.append(criteria["engine_size"])
     if criteria["mark_series"]:
-        query += " AND mark_series = ?"
+        query += " AND MarkSeries = ?"
         params.append(criteria["mark_series"])
     if criteria["drive_type"]:
         query += " AND TRWDansDRWDive = ?"
