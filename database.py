@@ -88,6 +88,20 @@ def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_
     return positions
 
 
+def get_transmissions(
+    db_path, manufacturer, model, engine_size, mark_series, drive_type, position
+):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT DISTINCT Transmission FROM boots WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? AND TransDrive = ? AND MPos = ? ORDER BY Transmission ASC",
+        (manufacturer, model, engine_size, mark_series, drive_type, position),
+    )
+    transmissions = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return transmissions
+
+
 def get_parts(db_path, criteria):
     print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)

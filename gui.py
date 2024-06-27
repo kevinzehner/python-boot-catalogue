@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QVBoxLayout,
     QWidget,
-    QHBoxLayout,
     QGridLayout,
     QSizePolicy,
 )
@@ -21,7 +20,7 @@ import database
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        uic.loadUi("main_window.ui", self)
+        uic.loadUi("main_window_new.ui", self)  # Load the new .ui file
         self.initializeUI()
 
         # Load the stylesheet
@@ -48,6 +47,9 @@ class MainWindow(QMainWindow):
         self.markSeriesComboBox = self.findChild(QComboBox, "markSeriesComboBox")
         self.driveTypeComboBox = self.findChild(QComboBox, "driveTypeComboBox")
         self.positionComboBox = self.findChild(QComboBox, "positionComboBox")
+        self.transmissionComboBox = self.findChild(
+            QComboBox, "transmissionComboBox"
+        )  # New dropdown
         self.searchButton = self.findChild(QPushButton, "searchButton")
         self.resetButton = self.findChild(QPushButton, "resetButton")
 
@@ -83,6 +85,9 @@ class MainWindow(QMainWindow):
         self.engineSizeComboBox.currentIndexChanged.connect(self.update_mark_series)
         self.markSeriesComboBox.currentIndexChanged.connect(self.update_drive_types)
         self.driveTypeComboBox.currentIndexChanged.connect(self.update_positions)
+        self.positionComboBox.currentIndexChanged.connect(
+            self.update_transmissions
+        )  # Connect new dropdown
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
 
@@ -128,6 +133,10 @@ class MainWindow(QMainWindow):
         self.driveTypeComboBox.setCurrentIndex(0)
         self.positionComboBox.addItem("Select position")
         self.positionComboBox.setCurrentIndex(0)
+        self.transmissionComboBox.addItem(
+            "Select transmission"
+        )  # Set placeholder for new dropdown
+        self.transmissionComboBox.setCurrentIndex(0)
 
     def populate_manufacturers(self):
         manufacturers = database.get_unique_manufacturers("boots.db")
@@ -141,6 +150,9 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
             self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
             self.clear_combo_box(self.positionComboBox, "Select position")
+            self.clear_combo_box(
+                self.transmissionComboBox, "Select transmission"
+            )  # Clear new dropdown
             return
         models = database.get_models("boots.db", selected_manufacturer)
         self.modelComboBox.addItems(models)
@@ -154,6 +166,9 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
             self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
             self.clear_combo_box(self.positionComboBox, "Select position")
+            self.clear_combo_box(
+                self.transmissionComboBox, "Select transmission"
+            )  # Clear new dropdown
             return
         engine_sizes = database.get_engine_sizes(
             "boots.db", selected_manufacturer, selected_model
@@ -169,6 +184,9 @@ class MainWindow(QMainWindow):
         if selected_engine_size == "Select engine size":
             self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
             self.clear_combo_box(self.positionComboBox, "Select position")
+            self.clear_combo_box(
+                self.transmissionComboBox, "Select transmission"
+            )  # Clear new dropdown
             return
         mark_series = database.get_mark_series(
             "boots.db",
@@ -187,6 +205,9 @@ class MainWindow(QMainWindow):
         selected_mark_series = self.markSeriesComboBox.currentText()
         if selected_mark_series == "Select mark series":
             self.clear_combo_box(self.positionComboBox, "Select position")
+            self.clear_combo_box(
+                self.transmissionComboBox, "Select transmission"
+            )  # Clear new dropdown
             return
         drive_types = database.get_drive_types(
             "boots.db",
@@ -206,6 +227,9 @@ class MainWindow(QMainWindow):
         selected_mark_series = self.markSeriesComboBox.currentText()
         selected_drive_type = self.driveTypeComboBox.currentText()
         if selected_drive_type == "Select drive type":
+            self.clear_combo_box(
+                self.transmissionComboBox, "Select transmission"
+            )  # Clear new dropdown
             return
         positions = database.get_positions(
             "boots.db",
@@ -216,6 +240,28 @@ class MainWindow(QMainWindow):
             selected_drive_type,
         )
         self.positionComboBox.addItems(positions)
+        self.update_transmissions()  # Update new dropdown
+
+    def update_transmissions(self):
+        self.clear_combo_box(self.transmissionComboBox, "Select transmission")
+        selected_manufacturer = self.manufacturerComboBox.currentText()
+        selected_model = self.modelComboBox.currentText()
+        selected_engine_size = self.engineSizeComboBox.currentText()
+        selected_mark_series = self.markSeriesComboBox.currentText()
+        selected_drive_type = self.driveTypeComboBox.currentText()
+        selected_position = self.positionComboBox.currentText()
+        if selected_position == "Select position":
+            return
+        transmissions = database.get_transmissions(
+            "boots.db",
+            selected_manufacturer,
+            selected_model,
+            selected_engine_size,
+            selected_mark_series,
+            selected_drive_type,
+            selected_position,
+        )
+        self.transmissionComboBox.addItems(transmissions)
 
     def clear_combo_box(self, combo_box, placeholder):
         combo_box.clear()
@@ -229,6 +275,7 @@ class MainWindow(QMainWindow):
         self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
         self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
         self.clear_combo_box(self.positionComboBox, "Select position")
+        self.clear_combo_box(self.transmissionComboBox, "Select transmission")
         self.populate_manufacturers()
 
         # Clear the results layout
@@ -254,6 +301,7 @@ class MainWindow(QMainWindow):
         mark_series = self.markSeriesComboBox.currentText()
         drive_type = self.driveTypeComboBox.currentText()
         position = self.positionComboBox.currentText()
+        transmission = self.transmissionComboBox.currentText()  # Get new dropdown value
 
         criteria = {
             "manufacturer": (
@@ -264,6 +312,9 @@ class MainWindow(QMainWindow):
             "mark_series": mark_series if mark_series != "Select mark series" else None,
             "drive_type": drive_type if drive_type != "Select drive type" else None,
             "position": position if position != "Select position" else None,
+            "transmission": (
+                transmission if transmission != "Select transmission" else None
+            ),  # Add new criteria
         }
 
         parts = database.get_parts("boots.db", criteria)
@@ -309,10 +360,3 @@ class MainWindow(QMainWindow):
         self.resultsWidget.setLayout(layout)
         self.resultsWidget.update()
         self.resultsScrollArea.update()
-
-
-if __name__ == "__main__":
-    app = QApplication([])
-    window = MainWindow()
-    window.show()
-    app.exec_()
