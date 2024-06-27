@@ -1,13 +1,9 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from gui import MainWindow
+from gui import MainWindow  # Ensure you're importing the correct MainWindow class
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    # Load and apply the QSS file
-    with open("style.qss", "r") as file:
-        app.setStyleSheet(file.read())
-
-    window = MainWindow()
+    window = MainWindow()  # Instantiate the new MainWindow class
     window.show()
     sys.exit(app.exec_())
