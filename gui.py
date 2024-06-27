@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QSizePolicy,
 )
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
 import database
@@ -130,7 +130,7 @@ class MainWindow(QMainWindow):
         self.positionComboBox.setCurrentIndex(0)
 
     def populate_manufacturers(self):
-        manufacturers = database.get_unique_manufacturers("wheelbearings_LSODS.db")
+        manufacturers = database.get_unique_manufacturers("boots.db")
         self.manufacturerComboBox.addItems(manufacturers)
 
     def update_models(self):
@@ -142,7 +142,7 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
-        models = database.get_models("wheelbearings_LSODS.db", selected_manufacturer)
+        models = database.get_models("boots.db", selected_manufacturer)
         self.modelComboBox.addItems(models)
         self.update_engine_sizes()
 
@@ -156,7 +156,7 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
         engine_sizes = database.get_engine_sizes(
-            "wheelbearings_LSODS.db", selected_manufacturer, selected_model
+            "boots.db", selected_manufacturer, selected_model
         )
         self.engineSizeComboBox.addItems(engine_sizes)
         self.update_mark_series()
@@ -171,7 +171,7 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
         mark_series = database.get_mark_series(
-            "wheelbearings_LSODS.db",
+            "boots.db",
             selected_manufacturer,
             selected_model,
             selected_engine_size,
@@ -189,7 +189,7 @@ class MainWindow(QMainWindow):
             self.clear_combo_box(self.positionComboBox, "Select position")
             return
         drive_types = database.get_drive_types(
-            "wheelbearings_LSODS.db",
+            "boots.db",
             selected_manufacturer,
             selected_model,
             selected_engine_size,
@@ -208,7 +208,7 @@ class MainWindow(QMainWindow):
         if selected_drive_type == "Select drive type":
             return
         positions = database.get_positions(
-            "wheelbearings_LSODS.db",
+            "boots.db",
             selected_manufacturer,
             selected_model,
             selected_engine_size,
@@ -266,7 +266,7 @@ class MainWindow(QMainWindow):
             "position": position if position != "Select position" else None,
         }
 
-        parts = database.get_parts("wheelbearings_LSODS.db", criteria)
+        parts = database.get_parts("boots.db", criteria)
 
         self.display_results(parts)
 
@@ -274,36 +274,13 @@ class MainWindow(QMainWindow):
         self.clear_results()
         layout = self.resultsLayout
 
-        # Define a consistent size for each part widget
-        widget_width = 350
-        widget_height = 200
-
         row = 0
         col = 0
         for part in parts:
-            part_number, part_size, image_file = part
+            part_number, part_size = part
 
-            # Create a layout to hold the image and text
+            # Create a layout to hold the text
             part_layout = QVBoxLayout()
-
-            # Load and display the image
-            image_label = QLabel()
-            image_path = os.path.join(
-                "wheelbearing-img2", image_file.replace(".jpeg", ".jpg")
-            )
-            if not os.path.exists(image_path):
-                print(
-                    f"Image missing for part number: {part_number}"
-                )  # Log missing images
-                image_path = os.path.join("wheelbearing-img2", "generic.jpg")
-
-            pixmap = QPixmap(image_path)
-            pixmap = pixmap.scaled(
-                100, 100, Qt.KeepAspectRatio
-            )  # Adjust the size as needed
-            image_label.setPixmap(pixmap)
-            image_label.setAlignment(Qt.AlignCenter)
-            part_layout.addWidget(image_label)
 
             # Display the part number
             part_number_label = QLabel(f"Part Number: {part_number}")
@@ -320,10 +297,9 @@ class MainWindow(QMainWindow):
             # Create a widget to hold the part layout and add it to the grid layout
             part_widget = QWidget()
             part_widget.setLayout(part_layout)
-            part_widget.setFixedSize(widget_width, widget_height)
             layout.addWidget(
                 part_widget, row, col, alignment=Qt.AlignTop | Qt.AlignLeft
-            )  # Align to top-left
+            )
 
             col += 1
             if col >= 3:  # Change the number of columns as needed
