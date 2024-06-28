@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
         if self.instructionLabel is not None:
             self.instructionLabel.setText(
                 "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
-                "drive type, and position to search for wheel bearings.</p></body></html>"
+                "drive type, position, and transmission to search for wheel bearings.</p></body></html>"
             )
         else:
             print("instructionLabel not found")
@@ -328,9 +328,9 @@ class MainWindow(QMainWindow):
         row = 0
         col = 0
         for part in parts:
-            part_number, part_size = part
+            part_number, part_size, mod_ind = part
 
-            # Create a layout to hold the text
+            # Create a layout to hold the text and image
             part_layout = QVBoxLayout()
 
             # Display the part number
@@ -344,6 +344,25 @@ class MainWindow(QMainWindow):
             part_size_label.setAlignment(Qt.AlignCenter)
             part_size_label.setObjectName("partSizeLabel")
             part_layout.addWidget(part_size_label)
+
+            # Load and display the image
+            image_label = QLabel()
+            if mod_ind is None:
+                image_file = "generic.jpg"  # Use a generic image if ModInd is None
+            else:
+                image_file = mod_ind
+
+            image_path = os.path.join("boots-images", image_file)
+            if not os.path.exists(image_path):
+                image_path = os.path.join("boots-images", "generic.jpg")
+
+            pixmap = QPixmap(image_path)
+            pixmap = pixmap.scaled(
+                100, 100, Qt.KeepAspectRatio
+            )  # Adjust the size as needed
+            image_label.setPixmap(pixmap)
+            image_label.setAlignment(Qt.AlignCenter)
+            part_layout.addWidget(image_label)
 
             # Create a widget to hold the part layout and add it to the grid layout
             part_widget = QWidget()
@@ -360,3 +379,10 @@ class MainWindow(QMainWindow):
         self.resultsWidget.setLayout(layout)
         self.resultsWidget.update()
         self.resultsScrollArea.update()
+
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    app.exec_()

@@ -107,7 +107,7 @@ def get_parts(db_path, criteria):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    query = "SELECT DISTINCT PartNumber, PartSize FROM boots WHERE Manuf = ?"
+    query = "SELECT DISTINCT PartNumber, PartSize, ModInd FROM boots WHERE Manuf = ?"
     params = [criteria["manufacturer"]]
 
     if criteria["model"]:
@@ -125,6 +125,9 @@ def get_parts(db_path, criteria):
     if criteria["position"]:
         query += " AND MPos = ?"
         params.append(criteria["position"])
+    if criteria["transmission"]:
+        query += " AND Transmission = ?"
+        params.append(criteria["transmission"])
 
     query += " ORDER BY PartNumber ASC"
 
