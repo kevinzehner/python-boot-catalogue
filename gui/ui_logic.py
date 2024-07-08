@@ -1,73 +1,12 @@
-import os
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QLabel,
-    QComboBox,
-    QPushButton,
-    QScrollArea,
-    QVBoxLayout,
-    QWidget,
-    QGridLayout,
-    QSizePolicy,
-    QDialog,
-)
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget, QDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-from PyQt5 import uic
 import database
+import os
 
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        uic.loadUi("main_window_new.ui", self)  # Load the new .ui file
-        self.initializeUI()
-
-    def initializeUI(self):
-        self.logoLabel = self.findChild(QLabel, "logoLabel")
-        if self.logoLabel is not None:
-            self.logoLabel.setFixedSize(100, 100)  # Adjust the size as needed
-            self.logoLabel.setAlignment(Qt.AlignCenter)
-            self.setLogoImage()  # Set the logo image here
-
-        self.messageLabel = self.findChild(QLabel, "messageLabel")
-        self.instructionLabel = self.findChild(QLabel, "instructionLabel")
-        if self.instructionLabel is not None:
-            self.instructionLabel.setText(
-                "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
-                "drive type, position, and transmission to search for wheel bearings.</p></body></html>"
-            )
-
-        self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
-        self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
-        self.engineSizeComboBox = self.findChild(QComboBox, "engineSizeComboBox")
-        self.markSeriesComboBox = self.findChild(QComboBox, "markSeriesComboBox")
-        self.driveTypeComboBox = self.findChild(QComboBox, "driveTypeComboBox")
-        self.positionComboBox = self.findChild(QComboBox, "positionComboBox")
-        self.transmissionComboBox = self.findChild(
-            QComboBox, "transmissionComboBox"
-        )  # New dropdown
-        self.searchButton = self.findChild(QPushButton, "searchButton")
-        self.resetButton = self.findChild(QPushButton, "resetButton")
-
-        self.resultsScrollArea = self.findChild(QScrollArea, "resultsScrollArea")
-
-        # Create a QWidget and set it as the widget for resultsScrollArea
-        self.resultsWidget = QWidget()
-        self.resultsScrollArea.setWidget(self.resultsWidget)
-        self.resultsScrollArea.setWidgetResizable(True)
-
-        # Set a layout for the resultsWidget
-        self.resultsLayout = QGridLayout(self.resultsWidget)
-        self.resultsWidget.setLayout(self.resultsLayout)
-
-        # Set size policy to ensure the widget expands properly
-        self.resultsWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-        self.set_placeholders()
-        self.populate_manufacturers()
-
+class UiLogic:
+    def setup_ui_logic(self):
         self.manufacturerComboBox.currentIndexChanged.connect(self.update_models)
         self.modelComboBox.currentIndexChanged.connect(self.update_engine_sizes)
         self.engineSizeComboBox.currentIndexChanged.connect(self.update_mark_series)
@@ -76,39 +15,6 @@ class MainWindow(QMainWindow):
         self.positionComboBox.currentIndexChanged.connect(self.update_transmissions)
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
-
-    def setLogoImage(self):
-        # Set the logo image to the logoLabel
-        logo_path = os.path.join("main-images", "logo.JPG")  # Update to your image path
-        if os.path.exists(logo_path):
-            pixmap = QPixmap(logo_path)
-            self.logoLabel.setPixmap(
-                pixmap.scaled(
-                    self.logoLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
-                )
-            )
-
-    def set_placeholders(self):
-        self.manufacturerComboBox.addItem("Select manufacturer")
-        self.manufacturerComboBox.setCurrentIndex(0)
-        self.modelComboBox.addItem("Select model")
-        self.modelComboBox.setCurrentIndex(0)
-        self.engineSizeComboBox.addItem("Select engine size")
-        self.engineSizeComboBox.setCurrentIndex(0)
-        self.markSeriesComboBox.addItem("Select mark series")
-        self.markSeriesComboBox.setCurrentIndex(0)
-        self.driveTypeComboBox.addItem("Select drive type")
-        self.driveTypeComboBox.setCurrentIndex(0)
-        self.positionComboBox.addItem("Select position")
-        self.positionComboBox.setCurrentIndex(0)
-        self.transmissionComboBox.addItem(
-            "Select transmission"
-        )  # Set placeholder for new dropdown
-        self.transmissionComboBox.setCurrentIndex(0)
-
-    def populate_manufacturers(self):
-        manufacturers = database.get_unique_manufacturers("boots.db")
-        self.manufacturerComboBox.addItems(manufacturers)
 
     def update_models(self):
         self.clear_combo_box(self.modelComboBox, "Select model")
@@ -314,9 +220,12 @@ class MainWindow(QMainWindow):
             else:
                 image_file = mod_ind
 
-            image_path = os.path.join("boots-images", image_file)
+            base_path = os.path.dirname(os.path.abspath(__file__))
+            image_path = os.path.join(base_path, "..", "boots-images", image_file)
             if not os.path.exists(image_path):
-                image_path = os.path.join("boots-images", "generic.jpg")
+                image_path = os.path.join(
+                    base_path, "..", "boots-images", "generic.jpg"
+                )
 
             pixmap = QPixmap(image_path)
             pixmap = pixmap.scaled(
