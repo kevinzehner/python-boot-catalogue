@@ -1,3 +1,10 @@
+"""
+This module defines the UiLogic class, which contains the logic for handling user interactions 
+and dynamic updates to the UI components. It includes methods to update combo boxes based on 
+user selections, reset the UI, search for parts based on criteria, and display the results. 
+The logic is separated from the UI component initialization to ensure modularity and maintainability.
+"""
+
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget, QDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -7,6 +14,7 @@ import os
 
 class UiLogic:
     def setup_ui_logic(self):
+        """Connects signals to the appropriate slots for updating the UI based on user interactions."""
         self.manufacturerComboBox.currentIndexChanged.connect(self.update_models)
         self.modelComboBox.currentIndexChanged.connect(self.update_engine_sizes)
         self.engineSizeComboBox.currentIndexChanged.connect(self.update_mark_series)
@@ -17,32 +25,23 @@ class UiLogic:
         self.resetButton.clicked.connect(self.reset_dropdowns)
 
     def update_models(self):
+        """Updates the model combo box based on the selected manufacturer."""
         self.clear_combo_box(self.modelComboBox, "Select model")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         if selected_manufacturer == "Select manufacturer":
-            self.clear_combo_box(self.engineSizeComboBox, "Select engine size")
-            self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
-            self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
-            self.clear_combo_box(self.positionComboBox, "Select position")
-            self.clear_combo_box(
-                self.transmissionComboBox, "Select transmission"
-            )  # Clear new dropdown
+            self.clear_all_combo_boxes()
             return
         models = database.get_models("boots.db", selected_manufacturer)
         self.modelComboBox.addItems(models)
         self.update_engine_sizes()
 
     def update_engine_sizes(self):
+        """Updates the engine size combo box based on the selected model."""
         self.clear_combo_box(self.engineSizeComboBox, "Select engine size")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         selected_model = self.modelComboBox.currentText()
         if selected_model == "Select model":
-            self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
-            self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
-            self.clear_combo_box(self.positionComboBox, "Select position")
-            self.clear_combo_box(
-                self.transmissionComboBox, "Select transmission"
-            )  # Clear new dropdown
+            self.clear_all_combo_boxes(except_boxes=["model"])
             return
         engine_sizes = database.get_engine_sizes(
             "boots.db", selected_manufacturer, selected_model
@@ -51,16 +50,13 @@ class UiLogic:
         self.update_mark_series()
 
     def update_mark_series(self):
+        """Updates the mark series combo box based on the selected engine size."""
         self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         selected_model = self.modelComboBox.currentText()
         selected_engine_size = self.engineSizeComboBox.currentText()
         if selected_engine_size == "Select engine size":
-            self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
-            self.clear_combo_box(self.positionComboBox, "Select position")
-            self.clear_combo_box(
-                self.transmissionComboBox, "Select transmission"
-            )  # Clear new dropdown
+            self.clear_all_combo_boxes(except_boxes=["engine_size"])
             return
         mark_series = database.get_mark_series(
             "boots.db", selected_manufacturer, selected_model, selected_engine_size
@@ -69,16 +65,14 @@ class UiLogic:
         self.update_drive_types()
 
     def update_drive_types(self):
+        """Updates the drive type combo box based on the selected mark series."""
         self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         selected_model = self.modelComboBox.currentText()
         selected_engine_size = self.engineSizeComboBox.currentText()
         selected_mark_series = self.markSeriesComboBox.currentText()
         if selected_mark_series == "Select mark series":
-            self.clear_combo_box(self.positionComboBox, "Select position")
-            self.clear_combo_box(
-                self.transmissionComboBox, "Select transmission"
-            )  # Clear new dropdown
+            self.clear_all_combo_boxes(except_boxes=["mark_series"])
             return
         drive_types = database.get_drive_types(
             "boots.db",
@@ -91,6 +85,7 @@ class UiLogic:
         self.update_positions()
 
     def update_positions(self):
+        """Updates the position combo box based on the selected drive type."""
         self.clear_combo_box(self.positionComboBox, "Select position")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         selected_model = self.modelComboBox.currentText()
@@ -98,9 +93,7 @@ class UiLogic:
         selected_mark_series = self.markSeriesComboBox.currentText()
         selected_drive_type = self.driveTypeComboBox.currentText()
         if selected_drive_type == "Select drive type":
-            self.clear_combo_box(
-                self.transmissionComboBox, "Select transmission"
-            )  # Clear new dropdown
+            self.clear_all_combo_boxes(except_boxes=["drive_type"])
             return
         positions = database.get_positions(
             "boots.db",
@@ -114,6 +107,7 @@ class UiLogic:
         self.update_transmissions()  # Update new dropdown
 
     def update_transmissions(self):
+        """Updates the transmission combo box based on the selected position."""
         self.clear_combo_box(self.transmissionComboBox, "Select transmission")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         selected_model = self.modelComboBox.currentText()
@@ -135,11 +129,29 @@ class UiLogic:
         self.transmissionComboBox.addItems(transmissions)
 
     def clear_combo_box(self, combo_box, placeholder):
+        """Clears the given combo box and sets a placeholder item."""
         combo_box.clear()
         combo_box.addItem(placeholder)
 
+    def clear_all_combo_boxes(self, except_boxes=None):
+        """Clears all combo boxes except those specified."""
+        if except_boxes is None:
+            except_boxes = []
+        if "model" not in except_boxes:
+            self.clear_combo_box(self.modelComboBox, "Select model")
+        if "engine_size" not in except_boxes:
+            self.clear_combo_box(self.engineSizeComboBox, "Select engine size")
+        if "mark_series" not in except_boxes:
+            self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
+        if "drive_type" not in except_boxes:
+            self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
+        if "position" not in except_boxes:
+            self.clear_combo_box(self.positionComboBox, "Select position")
+        if "transmission" not in except_boxes:
+            self.clear_combo_box(self.transmissionComboBox, "Select transmission")
+
     def reset_dropdowns(self):
-        # Reset the dropdowns
+        """Resets all dropdowns to their initial state and repopulates manufacturers."""
         self.clear_combo_box(self.manufacturerComboBox, "Select manufacturer")
         self.clear_combo_box(self.modelComboBox, "Select model")
         self.clear_combo_box(self.engineSizeComboBox, "Select engine size")
@@ -153,6 +165,7 @@ class UiLogic:
         self.clear_results()
 
     def clear_results(self):
+        """Clears the results area in the UI."""
         layout = self.resultsLayout
         count = layout.count()
 
@@ -166,6 +179,7 @@ class UiLogic:
         self.resultsScrollArea.update()
 
     def search_parts(self):
+        """Searches for parts based on selected criteria and displays the results."""
         manufacturer = self.manufacturerComboBox.currentText()
         model = self.modelComboBox.currentText()
         engine_size = self.engineSizeComboBox.currentText()
@@ -192,6 +206,7 @@ class UiLogic:
         self.display_results(parts)
 
     def display_results(self, parts):
+        """Displays the search results in the results area."""
         self.clear_results()
         layout = self.resultsLayout
 
@@ -255,6 +270,7 @@ class UiLogic:
         self.resultsScrollArea.update()
 
     def show_image_modal(self, image_path):
+        """Shows a modal dialog with a larger view of the clicked image."""
         dialog = QDialog(self)
         dialog.setWindowTitle("Image Preview")
         dialog.setModal(True)
