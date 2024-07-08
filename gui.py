@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     QGridLayout,
     QSizePolicy,
+    QDialog,
 )
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -23,14 +24,15 @@ class MainWindow(QMainWindow):
         uic.loadUi("main_window_new.ui", self)  # Load the new .ui file
         self.initializeUI()
 
-        # Load the stylesheet
-        self.loadStylesheet("style.qss")
-
-    def loadStylesheet(self, file_name):
-        with open(file_name, "r") as file:
-            self.setStyleSheet(file.read())
-
     def initializeUI(self):
+        self.logoLabel = self.findChild(QLabel, "logoLabel")
+        if self.logoLabel is None:
+            print("logoLabel not found")
+        else:
+            self.logoLabel.setFixedSize(100, 100)  # Adjust the size as needed
+            self.logoLabel.setAlignment(Qt.AlignCenter)
+            self.setLogoImage()  # Set the logo image here
+
         self.messageLabel = self.findChild(QLabel, "messageLabel")
         self.instructionLabel = self.findChild(QLabel, "instructionLabel")
         if self.instructionLabel is not None:
@@ -67,9 +69,6 @@ class MainWindow(QMainWindow):
         # Set size policy to ensure the widget expands properly
         self.resultsWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        # Set the logo image to the messageLabel
-        self.setLogoImage()
-
         self.set_placeholders()
         self.populate_manufacturers()
 
@@ -78,23 +77,22 @@ class MainWindow(QMainWindow):
         self.engineSizeComboBox.currentIndexChanged.connect(self.update_mark_series)
         self.markSeriesComboBox.currentIndexChanged.connect(self.update_drive_types)
         self.driveTypeComboBox.currentIndexChanged.connect(self.update_positions)
-        self.positionComboBox.currentIndexChanged.connect(
-            self.update_transmissions
-        )  # Connect new dropdown
+        self.positionComboBox.currentIndexChanged.connect(self.update_transmissions)
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
 
     def setLogoImage(self):
-        # Set the logo image to the messageLabel
-        logo_path = os.path.join(
-            "main-images", "title.png"
-        )  # Replace with the actual logo image path
-        pixmap = QPixmap(logo_path)
-        self.messageLabel.setPixmap(
-            pixmap.scaled(
-                self.messageLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+        # Set the logo image to the logoLabel
+        logo_path = os.path.join("main-images", "logo.JPG")  # Update to your image path
+        if os.path.exists(logo_path):
+            pixmap = QPixmap(logo_path)
+            self.logoLabel.setPixmap(
+                pixmap.scaled(
+                    self.logoLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+                )
             )
-        )
+        else:
+            print("Logo image not found at path:", logo_path)
 
     def set_placeholders(self):
         self.manufacturerComboBox.addItem("Select manufacturer")
@@ -312,13 +310,11 @@ class MainWindow(QMainWindow):
             # Display the part number
             part_number_label = QLabel(f"Part Number: {part_number}")
             part_number_label.setAlignment(Qt.AlignCenter)
-            part_number_label.setObjectName("partNumberLabel")
             part_layout.addWidget(part_number_label)
 
             # Display the part size
             part_size_label = QLabel(f"Part Size: {part_size}")
             part_size_label.setAlignment(Qt.AlignCenter)
-            part_size_label.setObjectName("partSizeLabel")
             part_layout.addWidget(part_size_label)
 
             # Load and display the image
@@ -338,6 +334,9 @@ class MainWindow(QMainWindow):
             )  # Adjust the size as needed
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignCenter)
+            image_label.mousePressEvent = (
+                lambda event, path=image_path: self.show_image_modal(path)
+            )
             part_layout.addWidget(image_label)
 
             # Create a widget to hold the part layout and add it to the grid layout
@@ -355,6 +354,20 @@ class MainWindow(QMainWindow):
         self.resultsWidget.setLayout(layout)
         self.resultsWidget.update()
         self.resultsScrollArea.update()
+
+    def show_image_modal(self, image_path):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Image Preview")
+        dialog.setModal(True)
+        layout = QVBoxLayout()
+
+        pixmap = QPixmap(image_path)
+        label = QLabel()
+        label.setPixmap(pixmap)
+        layout.addWidget(label)
+
+        dialog.setLayout(layout)
+        dialog.exec_()
 
 
 if __name__ == "__main__":
