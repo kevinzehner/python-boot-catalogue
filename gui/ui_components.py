@@ -1,3 +1,10 @@
+"""
+This module defines the UiComponents class, which is responsible for setting up the UI components
+of the application. It includes methods for initializing various widgets, setting their properties,
+and populating data in the UI elements such as combo boxes. The UI layout is enhanced by setting
+placeholders and loading images for display.
+"""
+
 import os
 from PyQt5.QtWidgets import (
     QLabel,
@@ -12,7 +19,6 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import database
-
 
 class UiComponents:
     def setup_ui_components(self):
