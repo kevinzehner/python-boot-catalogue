@@ -26,9 +26,7 @@ class MainWindow(QMainWindow):
 
     def initializeUI(self):
         self.logoLabel = self.findChild(QLabel, "logoLabel")
-        if self.logoLabel is None:
-            print("logoLabel not found")
-        else:
+        if self.logoLabel is not None:
             self.logoLabel.setFixedSize(100, 100)  # Adjust the size as needed
             self.logoLabel.setAlignment(Qt.AlignCenter)
             self.setLogoImage()  # Set the logo image here
@@ -40,8 +38,6 @@ class MainWindow(QMainWindow):
                 "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
                 "drive type, position, and transmission to search for wheel bearings.</p></body></html>"
             )
-        else:
-            print("instructionLabel not found")
 
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
@@ -91,8 +87,6 @@ class MainWindow(QMainWindow):
                     self.logoLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
                 )
             )
-        else:
-            print("Logo image not found at path:", logo_path)
 
     def set_placeholders(self):
         self.manufacturerComboBox.addItem("Select manufacturer")
@@ -163,10 +157,7 @@ class MainWindow(QMainWindow):
             )  # Clear new dropdown
             return
         mark_series = database.get_mark_series(
-            "boots.db",
-            selected_manufacturer,
-            selected_model,
-            selected_engine_size,
+            "boots.db", selected_manufacturer, selected_model, selected_engine_size
         )
         self.markSeriesComboBox.addItems(mark_series)
         self.update_drive_types()
@@ -292,7 +283,6 @@ class MainWindow(QMainWindow):
         }
 
         parts = database.get_parts("boots.db", criteria)
-
         self.display_results(parts)
 
     def display_results(self, parts):
