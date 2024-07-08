@@ -2,18 +2,15 @@ import sqlite3
 
 
 def get_unique_manufacturers(db_path):
-    print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("SELECT DISTINCT Manuf FROM boots ORDER BY Manuf ASC")
     manufacturers = [row[0] for row in cursor.fetchall()]
     conn.close()
-    print(f"Manufacturers retrieved: {manufacturers}")
     return manufacturers
 
 
 def get_models(db_path, manufacturer):
-    print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
@@ -22,12 +19,10 @@ def get_models(db_path, manufacturer):
     )
     models = [row[0] for row in cursor.fetchall()]
     conn.close()
-    print(f"Models for {manufacturer} retrieved: {models}")
     return models
 
 
 def get_engine_sizes(db_path, manufacturer, model):
-    print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
@@ -36,12 +31,10 @@ def get_engine_sizes(db_path, manufacturer, model):
     )
     engine_sizes = [str(row[0]) for row in cursor.fetchall()]
     conn.close()
-    print(f"Engine sizes for {manufacturer}, {model} retrieved: {engine_sizes}")
     return engine_sizes
 
 
 def get_mark_series(db_path, manufacturer, model, engine_size):
-    print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
@@ -50,14 +43,10 @@ def get_mark_series(db_path, manufacturer, model, engine_size):
     )
     mark_series = [row[0] for row in cursor.fetchall()]
     conn.close()
-    print(
-        f"Mark series for {manufacturer}, {model}, {engine_size} retrieved: {mark_series}"
-    )
     return mark_series
 
 
 def get_drive_types(db_path, manufacturer, model, engine_size, mark_series):
-    print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
@@ -66,14 +55,10 @@ def get_drive_types(db_path, manufacturer, model, engine_size, mark_series):
     )
     drive_types = [row[0] for row in cursor.fetchall()]
     conn.close()
-    print(
-        f"Drive types for {manufacturer}, {model}, {engine_size}, {mark_series} retrieved: {drive_types}"
-    )
     return drive_types
 
 
 def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_type):
-    print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
@@ -82,9 +67,6 @@ def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_
     )
     positions = [row[0] for row in cursor.fetchall()]
     conn.close()
-    print(
-        f"Positions for {manufacturer}, {model}, {engine_size}, {mark_series}, {drive_type} retrieved: {positions}"
-    )
     return positions
 
 
@@ -103,7 +85,6 @@ def get_transmissions(
 
 
 def get_parts(db_path, criteria):
-    print(f"Connecting to database at {db_path}")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
@@ -134,5 +115,4 @@ def get_parts(db_path, criteria):
     cursor.execute(query, params)
     parts = cursor.fetchall()
     conn.close()
-    print(f"Parts retrieved for criteria {criteria}: {parts}")
     return parts
