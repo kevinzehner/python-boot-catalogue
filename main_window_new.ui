@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1052</height>
+    <width>1440</width>
+    <height>872</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -105,10 +105,10 @@
    <widget class="QScrollArea" name="resultsScrollArea">
     <property name="geometry">
      <rect>
-      <x>740</x>
-      <y>80</y>
-      <width>1121</width>
-      <height>901</height>
+      <x>700</x>
+      <y>40</y>
+      <width>721</width>
+      <height>781</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -119,8 +119,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1119</width>
-       <height>899</height>
+       <width>719</width>
+       <height>779</height>
       </rect>
      </property>
     </widget>
@@ -164,7 +164,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1920</width>
+     <width>1440</width>
      <height>24</height>
     </rect>
    </property>

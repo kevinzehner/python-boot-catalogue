@@ -29,11 +29,11 @@ class UiLogic:
         self.clear_combo_box(self.modelComboBox, "Select model")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         if selected_manufacturer == "Select manufacturer":
-            self.clear_all_combo_boxes()
+            self.clear_all_combo_boxes(except_boxes=["manufacturer"])
             return
         models = database.get_models("boots.db", selected_manufacturer)
         self.modelComboBox.addItems(models)
-        self.update_engine_sizes()
+        self.update_engine_sizes()  # Avoiding recursion issues by ensuring order of operations
 
     def update_engine_sizes(self):
         """Updates the engine size combo box based on the selected model."""
@@ -41,7 +41,7 @@ class UiLogic:
         selected_manufacturer = self.manufacturerComboBox.currentText()
         selected_model = self.modelComboBox.currentText()
         if selected_model == "Select model":
-            self.clear_all_combo_boxes(except_boxes=["model"])
+            self.clear_all_combo_boxes(except_boxes=["manufacturer", "model"])
             return
         engine_sizes = database.get_engine_sizes(
             "boots.db", selected_manufacturer, selected_model
@@ -56,7 +56,9 @@ class UiLogic:
         selected_model = self.modelComboBox.currentText()
         selected_engine_size = self.engineSizeComboBox.currentText()
         if selected_engine_size == "Select engine size":
-            self.clear_all_combo_boxes(except_boxes=["engine_size"])
+            self.clear_all_combo_boxes(
+                except_boxes=["manufacturer", "model", "engine_size"]
+            )
             return
         mark_series = database.get_mark_series(
             "boots.db", selected_manufacturer, selected_model, selected_engine_size
@@ -72,7 +74,9 @@ class UiLogic:
         selected_engine_size = self.engineSizeComboBox.currentText()
         selected_mark_series = self.markSeriesComboBox.currentText()
         if selected_mark_series == "Select mark series":
-            self.clear_all_combo_boxes(except_boxes=["mark_series"])
+            self.clear_all_combo_boxes(
+                except_boxes=["manufacturer", "model", "engine_size", "mark_series"]
+            )
             return
         drive_types = database.get_drive_types(
             "boots.db",
@@ -93,7 +97,15 @@ class UiLogic:
         selected_mark_series = self.markSeriesComboBox.currentText()
         selected_drive_type = self.driveTypeComboBox.currentText()
         if selected_drive_type == "Select drive type":
-            self.clear_all_combo_boxes(except_boxes=["drive_type"])
+            self.clear_all_combo_boxes(
+                except_boxes=[
+                    "manufacturer",
+                    "model",
+                    "engine_size",
+                    "mark_series",
+                    "drive_type",
+                ]
+            )
             return
         positions = database.get_positions(
             "boots.db",
@@ -152,13 +164,8 @@ class UiLogic:
 
     def reset_dropdowns(self):
         """Resets all dropdowns to their initial state and repopulates manufacturers."""
+        self.clear_all_combo_boxes()
         self.clear_combo_box(self.manufacturerComboBox, "Select manufacturer")
-        self.clear_combo_box(self.modelComboBox, "Select model")
-        self.clear_combo_box(self.engineSizeComboBox, "Select engine size")
-        self.clear_combo_box(self.markSeriesComboBox, "Select mark series")
-        self.clear_combo_box(self.driveTypeComboBox, "Select drive type")
-        self.clear_combo_box(self.positionComboBox, "Select position")
-        self.clear_combo_box(self.transmissionComboBox, "Select transmission")
         self.populate_manufacturers()
 
         # Clear the results layout
