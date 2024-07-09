@@ -8,7 +8,9 @@ if __name__ == "__main__":
 
     # Apply the stylesheet
     with open("style.qss", "r") as style_file:
-        app.setStyleSheet(style_file.read())
+        style_content = style_file.read()
+        print(style_content)  # Debug statement to print the content of the stylesheet
+        app.setStyleSheet(style_content)
 
     window.show()
     sys.exit(app.exec_())

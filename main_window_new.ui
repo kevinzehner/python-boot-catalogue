@@ -108,7 +108,7 @@
       <x>700</x>
       <y>40</y>
       <width>1141</width>
-      <height>951</height>
+      <height>971</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -120,7 +120,7 @@
        <x>0</x>
        <y>0</y>
        <width>1139</width>
-       <height>949</height>
+       <height>969</height>
       </rect>
      </property>
     </widget>
@@ -161,7 +161,7 @@
    <widget class="QLabel" name="bottomImageLabel">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>80</x>
       <y>510</y>
       <width>541</width>
       <height>281</height>

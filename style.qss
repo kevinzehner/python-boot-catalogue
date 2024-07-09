@@ -1,54 +1,41 @@
-/* style.qss */
-
-/* General Styles */
-QWidget {
-    font-family: Arial;
-    font-size: 14pt;
+QMainWindow {
+    background-color: #2C3E50;
 }
 
-QLabel#messageLabel {
-    font-size: 16pt;
-    font-weight: bold;
+QLabel {
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
 }
 
-QLabel#instructionLabel {
-    font-size: 14pt;
-    font-weight: regular;
-}
-
-/* ComboBox Styles */
 QComboBox {
-   
-    font-size: 12pt;
+    background-color: #34495E;
+    color: #FFFFFF;
+    border: 1px solid #BDC3C7;
+    padding: 5px;
+    font-family: Arial, sans-serif;
+    min-width: 200px;  /* Ensure consistent width */
+    margin-bottom: 10px;  /* Add spacing between dropdowns */
 }
 
-/* Button Styles */
 QPushButton {
-    font-size: 14pt;
-    font-weight: bold;
-    height: 30px;
-    width: 100px;
+    background-color: #E74C3C;
+    color: #FFFFFF;
+    border: 1px solid #BDC3C7;  /* Add a border when not hovered */
+    border-radius: 5px;
+    padding: 10px;
+    font-family: Arial, sans-serif;
 }
 
-QPushButton#searchButton {
-    background-color: #fddb03;
-    color: black;
-  
+QPushButton:hover {
+    background-color: #E67E22;
+    border: 1px solid #BDC3C7;  /* Ensure the border is still visible on hover */
 }
 
-QPushButton#resetButton {
-    background-color: #233074;
-    color: white;
-
+QScrollArea {
+    border: none;
 }
 
-/* Result Part Styles */
-QLabel#partNumberLabel {
-    font-size: 14pt;
-    font-weight: bold;
-}
-
-QLabel#partSizeLabel {
-    font-size: 14pt;
-    font-weight: regular;
+QWidget {
+    background-color: #2C3E50;
+    color: #FFFFFF;
 }
