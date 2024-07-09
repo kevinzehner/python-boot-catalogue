@@ -20,6 +20,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import database
 
+
 class UiComponents:
     def setup_ui_components(self):
         self.logoLabel = self.findChild(QLabel, "logoLabel")
@@ -65,6 +66,11 @@ class UiComponents:
         self.set_placeholders()
         self.populate_manufacturers()
 
+        # Initialize the new QLabel for the bottom image
+        self.bottomImageLabel = self.findChild(QLabel, "bottomImageLabel")
+        if self.bottomImageLabel is not None:
+            self.set_bottom_image()
+
     def set_logo_image(self):
         # Set the logo image to the logoLabel
         base_path = os.path.dirname(os.path.abspath(__file__))
@@ -76,6 +82,22 @@ class UiComponents:
             self.logoLabel.setPixmap(
                 pixmap.scaled(
                     self.logoLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+                )
+            )
+
+    def set_bottom_image(self):
+        # Set the bottom image to the bottomImageLabel
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        image_path = os.path.join(
+            base_path, "..", "main-images", "boots-main-img.jpg"
+        )  # Update to your image path
+        if os.path.exists(image_path):
+            pixmap = QPixmap(image_path)
+            self.bottomImageLabel.setPixmap(
+                pixmap.scaled(
+                    self.bottomImageLabel.size(),
+                    Qt.KeepAspectRatio,
+                    Qt.SmoothTransformation,
                 )
             )
 

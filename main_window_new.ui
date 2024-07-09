@@ -158,6 +158,25 @@
      <string>logoLabel</string>
     </property>
    </widget>
+   <widget class="QLabel" name="bottomImageLabel">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>570</y>
+      <width>491</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>300</width>
+      <height>150</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>bottomImageLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
