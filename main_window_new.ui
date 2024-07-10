@@ -117,9 +117,9 @@ QScrollArea &gt; QWidget {
     <property name="geometry">
      <rect>
       <x>670</x>
-      <y>-10</y>
+      <y>50</y>
       <width>1201</width>
-      <height>1031</height>
+      <height>901</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -134,7 +134,7 @@ QScrollArea &gt; QWidget {
        <x>0</x>
        <y>0</y>
        <width>1201</width>
-       <height>1031</height>
+       <height>901</height>
       </rect>
      </property>
     </widget>

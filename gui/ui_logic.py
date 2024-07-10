@@ -278,8 +278,14 @@ class UiLogic:
             part_widget.setLayout(part_layout)
             part_widget.setFixedSize(card_width, card_height)  # Set fixed size
             part_widget.setStyleSheet(
-                "background-color: #FFFFFF; padding: 10px;"
-            )  # Ensure consistent styling
+                """
+                background-color: #E74C3C;  /* Orange/red background */
+                color: #FFFFFF;  /* White text */
+                padding: 10px;
+                border-radius: 10px;  /* Rounded corners */
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);  /* Shadow effect */
+            """
+            )
             layout.addWidget(
                 part_widget, row, col, alignment=Qt.AlignTop | Qt.AlignLeft
             )
