@@ -13,6 +13,17 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QScrollArea {
+    border: none;
+    background-color: #8B4513;  /* Saddle brown background */
+}
+
+QScrollArea &gt; QWidget {
+    background-color: #8B4513;  /* Saddle brown background for inner widgets */
+    color: #FFFFFF;  /* Ensure text color is white for inner widgets */
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QComboBox" name="modelComboBox">
     <property name="geometry">
@@ -105,11 +116,23 @@
    <widget class="QScrollArea" name="resultsScrollArea">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>40</y>
-      <width>1141</width>
-      <height>971</height>
+      <x>670</x>
+      <y>70</y>
+      <width>1201</width>
+      <height>911</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">/* QScrollArea styling */
+QScrollArea {
+    border: none;
+    background-color: #2D2D2D;  /* Dark gray background */
+}
+
+QScrollArea &gt; QWidget {
+    background-color: #2D2D2D;  /* Dark gray background for inner widgets */
+    color: #FFFFFF;  /* Ensure text color is white for inner widgets */
+}</string>
     </property>
     <property name="widgetResizable">
      <bool>true</bool>
@@ -119,8 +142,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1139</width>
-       <height>969</height>
+       <width>1201</width>
+       <height>911</height>
       </rect>
      </property>
     </widget>

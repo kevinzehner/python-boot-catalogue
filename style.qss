@@ -1,41 +1,50 @@
+/* QMainWindow background */
 QMainWindow {
-    background-color: #2C3E50;
+    background-color: #1E1E1E;  /* Very dark gray background */
 }
 
-QLabel {
-    color: #FFFFFF;
+/* General widget styling */
+QWidget {
+    background-color: #1E1E1E;  /* Very dark gray background */
+    color: #FFFFFF;  /* White text */
     font-family: Arial, sans-serif;
 }
 
+/* QLabel styling */
+QLabel {
+    color: #FFFFFF;  /* White text */
+    font-family: Arial, sans-serif;
+}
+
+/* QComboBox styling */
 QComboBox {
-    background-color: #34495E;
-    color: #FFFFFF;
-    border: 1px solid #BDC3C7;
+    background-color: #3E3E3E;  /* Dark gray background */
+    color: #FFFFFF;  /* White text */
+    border: 1px solid #4E4E4E;  /* Slightly lighter gray border */
     padding: 5px;
     font-family: Arial, sans-serif;
     min-width: 200px;  /* Ensure consistent width */
     margin-bottom: 10px;  /* Add spacing between dropdowns */
 }
 
+QComboBox QAbstractItemView {
+    background-color: #3E3E3E;  /* Dark gray background */
+    color: #FFFFFF;  /* White text */
+    selection-background-color: #575757;  /* Lighter gray background for selected item */
+    selection-color: #FFFFFF;  /* White text */
+}
+
+/* QPushButton styling */
 QPushButton {
-    background-color: #E74C3C;
-    color: #FFFFFF;
-    border: 1px solid #BDC3C7;  /* Add a border when not hovered */
+    background-color: #007ACC;  /* Blue background */
+    color: #FFFFFF;  /* White text */
+    border: 1px solid #4E4E4E;  /* Slightly lighter gray border */
     border-radius: 5px;
     padding: 10px;
     font-family: Arial, sans-serif;
 }
 
 QPushButton:hover {
-    background-color: #E67E22;
-    border: 1px solid #BDC3C7;  /* Ensure the border is still visible on hover */
-}
-
-QScrollArea {
-    border: none;
-}
-
-QWidget {
-    background-color: #2C3E50;
-    color: #FFFFFF;
+    background-color: #005A9E;  /* Darker blue background on hover */
+    border: 1px solid #4E4E4E;  /* Ensure the border is still visible on hover */
 }

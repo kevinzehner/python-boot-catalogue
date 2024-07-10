@@ -226,12 +226,12 @@ class UiLogic:
             part_layout = QVBoxLayout()
 
             # Display the part number
-            part_number_label = QLabel(f"Part Number: {part_number}")
+            part_number_label = QLabel(f"{part_number}")
             part_number_label.setAlignment(Qt.AlignCenter)
             part_layout.addWidget(part_number_label)
 
             # Display the part size
-            part_size_label = QLabel(f"Part Size: {part_size}")
+            part_size_label = QLabel(f"{part_size}")
             part_size_label.setAlignment(Qt.AlignCenter)
             part_layout.addWidget(part_size_label)
 
