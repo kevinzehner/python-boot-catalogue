@@ -171,8 +171,8 @@ QScrollArea &gt; QWidget {
    <widget class="QLabel" name="logoLabel">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>60</y>
+      <x>270</x>
+      <y>20</y>
       <width>60</width>
       <height>16</height>
      </rect>

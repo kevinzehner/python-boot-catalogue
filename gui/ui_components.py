@@ -25,7 +25,7 @@ class UiComponents:
     def setup_ui_components(self):
         self.logoLabel = self.findChild(QLabel, "logoLabel")
         if self.logoLabel is not None:
-            self.logoLabel.setFixedSize(100, 100)  # Adjust the size as needed
+            self.logoLabel.setFixedSize(150, 150)  # Adjust the size as needed
             self.logoLabel.setAlignment(Qt.AlignCenter)
             self.set_logo_image()
 
