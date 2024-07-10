@@ -219,20 +219,33 @@ class UiLogic:
 
         row = 0
         col = 0
+        max_columns = 4  # Change the number of columns to 4
+
+        card_width = 250
+        card_height = 350
+
         for part in parts:
             part_number, part_size, mod_ind = part
 
             # Create a layout to hold the text and image
             part_layout = QVBoxLayout()
 
-            # Display the part number
-            part_number_label = QLabel(f"{part_number}")
+            # Display the part number with larger font size
+            part_number_label = QLabel(f"<b>{part_number}</b>")
             part_number_label.setAlignment(Qt.AlignCenter)
+            part_number_label.setStyleSheet(
+                "font-size: 16px; padding: 5px;"
+            )  # Adjust font size and padding
             part_layout.addWidget(part_number_label)
 
-            # Display the part size
-            part_size_label = QLabel(f"{part_size}")
+            # Display the part size on multiple lines
+            part_size_lines = part_size.split(
+                " x "
+            )  # Assuming ' x ' is the delimiter in part_size
+            part_size_text = "\n".join(part_size_lines)
+            part_size_label = QLabel(part_size_text)
             part_size_label.setAlignment(Qt.AlignCenter)
+            part_size_label.setStyleSheet("padding: 5px;")  # Add padding
             part_layout.addWidget(part_size_label)
 
             # Load and display the image
@@ -251,7 +264,7 @@ class UiLogic:
 
             pixmap = QPixmap(image_path)
             pixmap = pixmap.scaled(
-                100, 100, Qt.KeepAspectRatio
+                150, 150, Qt.KeepAspectRatio
             )  # Adjust the size as needed
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignCenter)
@@ -263,12 +276,16 @@ class UiLogic:
             # Create a widget to hold the part layout and add it to the grid layout
             part_widget = QWidget()
             part_widget.setLayout(part_layout)
+            part_widget.setFixedSize(card_width, card_height)  # Set fixed size
+            part_widget.setStyleSheet(
+                "background-color: #FFFFFF; padding: 10px;"
+            )  # Ensure consistent styling
             layout.addWidget(
                 part_widget, row, col, alignment=Qt.AlignTop | Qt.AlignLeft
             )
 
             col += 1
-            if col >= 3:  # Change the number of columns as needed
+            if col >= max_columns:  # Change the number of columns as needed
                 col = 0
                 row += 1
 

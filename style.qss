@@ -1,26 +1,26 @@
 /* QMainWindow background */
 QMainWindow {
-    background-color: #1E1E1E;  /* Very dark gray background */
+    background-color: #FFFFFF;  /* White background */
 }
 
 /* General widget styling */
 QWidget {
-    background-color: #1E1E1E;  /* Very dark gray background */
-    color: #FFFFFF;  /* White text */
+    background-color: #FFFFFF;  /* White background for all widgets */
+    color: #000000;  /* Black text for all widgets */
     font-family: Arial, sans-serif;
 }
 
 /* QLabel styling */
 QLabel {
-    color: #FFFFFF;  /* White text */
+    color: #000000;  /* Black text */
     font-family: Arial, sans-serif;
 }
 
 /* QComboBox styling */
 QComboBox {
-    background-color: #3E3E3E;  /* Dark gray background */
-    color: #FFFFFF;  /* White text */
-    border: 1px solid #4E4E4E;  /* Slightly lighter gray border */
+    background-color: #F0F0F0;  /* Light gray background */
+    color: #000000;  /* Black text */
+    border: 1px solid #BDC3C7;  /* Light gray border */
     padding: 5px;
     font-family: Arial, sans-serif;
     min-width: 200px;  /* Ensure consistent width */
@@ -28,23 +28,49 @@ QComboBox {
 }
 
 QComboBox QAbstractItemView {
-    background-color: #3E3E3E;  /* Dark gray background */
-    color: #FFFFFF;  /* White text */
-    selection-background-color: #575757;  /* Lighter gray background for selected item */
-    selection-color: #FFFFFF;  /* White text */
+    background-color: #F0F0F0;  /* Background color of the dropdown list */
+    color: #000000;  /* Text color of the dropdown list */
+    selection-background-color: #E74C3C;  /* Background color of selected item */
+    selection-color: #FFFFFF;  /* Text color of selected item */
 }
 
 /* QPushButton styling */
 QPushButton {
-    background-color: #007ACC;  /* Blue background */
+    background-color: #E74C3C;  /* Red background */
     color: #FFFFFF;  /* White text */
-    border: 1px solid #4E4E4E;  /* Slightly lighter gray border */
+    border: 1px solid #BDC3C7;  /* Light gray border */
     border-radius: 5px;
     padding: 10px;
     font-family: Arial, sans-serif;
 }
 
 QPushButton:hover {
-    background-color: #005A9E;  /* Darker blue background on hover */
-    border: 1px solid #4E4E4E;  /* Ensure the border is still visible on hover */
+    background-color: #C0392B;  /* Darker red background on hover */
+    border: 1px solid #BDC3C7;  /* Ensure the border is still visible on hover */
+}
+
+/* QScrollArea styling */
+QScrollArea {
+    border: none;
+    background-color: #C0392B;  /* Red background */
+}
+
+QScrollArea > QWidget {
+    background-color: #C0392B;  /* Red background for inner widgets */
+    color: #000000;  /* Ensure text color is black for inner widgets */
+}
+
+QScrollArea > QWidget > QWidget {
+    background-color: #C0392B;  /* Red background for inner widgets */
+    color: #000000;  /* Ensure text color is black for inner widgets */
+}
+
+/* Specific widget types within QScrollArea */
+QScrollArea QLabel {
+    color: #000000;  /* Black text for labels within QScrollArea */
+}
+
+QScrollArea QPushButton {
+    background-color: #E74C3C;  /* Red background for buttons within QScrollArea */
+    color: #FFFFFF;  /* White text */
 }

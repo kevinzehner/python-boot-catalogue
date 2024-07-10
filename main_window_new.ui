@@ -117,22 +117,13 @@ QScrollArea &gt; QWidget {
     <property name="geometry">
      <rect>
       <x>670</x>
-      <y>70</y>
+      <y>-10</y>
       <width>1201</width>
-      <height>911</height>
+      <height>1031</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">/* QScrollArea styling */
-QScrollArea {
-    border: none;
-    background-color: #2D2D2D;  /* Dark gray background */
-}
-
-QScrollArea &gt; QWidget {
-    background-color: #2D2D2D;  /* Dark gray background for inner widgets */
-    color: #FFFFFF;  /* Ensure text color is white for inner widgets */
-}</string>
+     <string notr="true"/>
     </property>
     <property name="widgetResizable">
      <bool>true</bool>
@@ -143,7 +134,7 @@ QScrollArea &gt; QWidget {
        <x>0</x>
        <y>0</y>
        <width>1201</width>
-       <height>911</height>
+       <height>1031</height>
       </rect>
      </property>
     </widget>
