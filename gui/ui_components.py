@@ -23,11 +23,23 @@ import database
 
 class UiComponents:
     def setup_ui_components(self):
+        """Initializes and sets up the UI components."""
+        self.init_labels()
+        self.init_comboboxes()
+        self.init_buttons()
+        self.init_results_area()
+
+        self.set_placeholders()
+        self.populate_manufacturers()
+
+        self.init_images()
+
+    def init_labels(self):
+        """Initializes the QLabel components."""
         self.logoLabel = self.findChild(QLabel, "logoLabel")
         if self.logoLabel is not None:
             self.logoLabel.setFixedSize(150, 150)  # Adjust the size as needed
             self.logoLabel.setAlignment(Qt.AlignCenter)
-            self.set_logo_image()
 
         self.messageLabel = self.findChild(QLabel, "messageLabel")
         self.instructionLabel = self.findChild(QLabel, "instructionLabel")
@@ -37,18 +49,23 @@ class UiComponents:
                 "drive type, position, and transmission to search for wheel bearings.</p></body></html>"
             )
 
+    def init_comboboxes(self):
+        """Initializes the QComboBox components."""
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
         self.engineSizeComboBox = self.findChild(QComboBox, "engineSizeComboBox")
         self.markSeriesComboBox = self.findChild(QComboBox, "markSeriesComboBox")
         self.driveTypeComboBox = self.findChild(QComboBox, "driveTypeComboBox")
         self.positionComboBox = self.findChild(QComboBox, "positionComboBox")
-        self.transmissionComboBox = self.findChild(
-            QComboBox, "transmissionComboBox"
-        )  # New dropdown
+        self.transmissionComboBox = self.findChild(QComboBox, "transmissionComboBox")
+
+    def init_buttons(self):
+        """Initializes the QPushButton components."""
         self.searchButton = self.findChild(QPushButton, "searchButton")
         self.resetButton = self.findChild(QPushButton, "resetButton")
 
+    def init_results_area(self):
+        """Initializes the QScrollArea for displaying results."""
         self.resultsScrollArea = self.findChild(QScrollArea, "resultsScrollArea")
 
         # Create a QWidget and set it as the widget for resultsScrollArea
@@ -63,20 +80,17 @@ class UiComponents:
         # Set size policy to ensure the widget expands properly
         self.resultsWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        self.set_placeholders()
-        self.populate_manufacturers()
-
-        # Initialize the new QLabel for the bottom image
+    def init_images(self):
+        """Initializes and sets the images for the logo and bottom image."""
+        self.set_logo_image()
         self.bottomImageLabel = self.findChild(QLabel, "bottomImageLabel")
         if self.bottomImageLabel is not None:
             self.set_bottom_image()
 
     def set_logo_image(self):
-        # Set the logo image to the logoLabel
+        """Sets the logo image to the logoLabel."""
         base_path = os.path.dirname(os.path.abspath(__file__))
-        logo_path = os.path.join(
-            base_path, "..", "main-images", "logo.JPG"
-        )  # Update to your image path
+        logo_path = os.path.join(base_path, "..", "main-images", "logo.JPG")
         if os.path.exists(logo_path):
             pixmap = QPixmap(logo_path)
             self.logoLabel.setPixmap(
@@ -86,11 +100,9 @@ class UiComponents:
             )
 
     def set_bottom_image(self):
-        # Set the bottom image to the bottomImageLabel
+        """Sets the bottom image to the bottomImageLabel."""
         base_path = os.path.dirname(os.path.abspath(__file__))
-        image_path = os.path.join(
-            base_path, "..", "main-images", "boots-main-img.jpg"
-        )  # Update to your image path
+        image_path = os.path.join(base_path, "..", "main-images", "boots-main-img.jpg")
         if os.path.exists(image_path):
             pixmap = QPixmap(image_path)
             self.bottomImageLabel.setPixmap(
@@ -102,6 +114,7 @@ class UiComponents:
             )
 
     def set_placeholders(self):
+        """Sets placeholder text for all combo boxes."""
         self.manufacturerComboBox.addItem("Select manufacturer")
         self.manufacturerComboBox.setCurrentIndex(0)
         self.modelComboBox.addItem("Select model")
@@ -114,11 +127,10 @@ class UiComponents:
         self.driveTypeComboBox.setCurrentIndex(0)
         self.positionComboBox.addItem("Select position")
         self.positionComboBox.setCurrentIndex(0)
-        self.transmissionComboBox.addItem(
-            "Select transmission"
-        )  # Set placeholder for new dropdown
+        self.transmissionComboBox.addItem("Select transmission")
         self.transmissionComboBox.setCurrentIndex(0)
 
     def populate_manufacturers(self):
+        """Populates the manufacturer combo box with data from the database."""
         manufacturers = database.get_unique_manufacturers("boots.db")
         self.manufacturerComboBox.addItems(manufacturers)
