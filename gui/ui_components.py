@@ -50,7 +50,7 @@ class UiComponents:
             )
 
     def init_comboboxes(self):
-        """Initializes the QComboBox components."""
+        """Initializes the dropdowns."""
         self.manufacturerComboBox = self.findChild(QComboBox, "manufacturerComboBox")
         self.modelComboBox = self.findChild(QComboBox, "modelComboBox")
         self.engineSizeComboBox = self.findChild(QComboBox, "engineSizeComboBox")
@@ -60,12 +60,12 @@ class UiComponents:
         self.transmissionComboBox = self.findChild(QComboBox, "transmissionComboBox")
 
     def init_buttons(self):
-        """Initializes the QPushButton components."""
+        """Initializes the Search and Reset components."""
         self.searchButton = self.findChild(QPushButton, "searchButton")
         self.resetButton = self.findChild(QPushButton, "resetButton")
 
     def init_results_area(self):
-        """Initializes the QScrollArea for displaying results."""
+        """Initializes the results box."""
         self.resultsScrollArea = self.findChild(QScrollArea, "resultsScrollArea")
 
         # Create a QWidget and set it as the widget for resultsScrollArea
