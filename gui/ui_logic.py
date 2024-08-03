@@ -1,6 +1,6 @@
 """
 This module defines the UiLogic class, which contains the logic for handling user interactions 
-and dynamic updates to the UI components. It includes methods to update combo boxes based on 
+and dynamic updates to the UI components. It includes methods to update dropdowns based on 
 user selections, reset the UI, search for parts based on criteria, and display the results. 
 The logic is separated from the UI component initialization to ensure modularity and maintainability.
 """
@@ -33,7 +33,7 @@ class UiLogic:
             return
         models = database.get_models("boots.db", selected_manufacturer)
         self.modelComboBox.addItems(models)
-        self.update_engine_sizes()  # Avoiding recursion issues by ensuring order of operations
+        self.update_engine_sizes()
 
     def update_engine_sizes(self):
         """Updates the engine size combo box based on the selected model."""
@@ -186,14 +186,14 @@ class UiLogic:
         self.resultsScrollArea.update()
 
     def search_parts(self):
-        """Searches for parts based on selected criteria and displays the results."""
+        """Searches for parts based on selected criteria and displays the results. The if else statements are used to check that the current text is not the placeholder text."""
         manufacturer = self.manufacturerComboBox.currentText()
         model = self.modelComboBox.currentText()
         engine_size = self.engineSizeComboBox.currentText()
         mark_series = self.markSeriesComboBox.currentText()
         drive_type = self.driveTypeComboBox.currentText()
         position = self.positionComboBox.currentText()
-        transmission = self.transmissionComboBox.currentText()  # Get new dropdown value
+        transmission = self.transmissionComboBox.currentText()
 
         criteria = {
             "manufacturer": (
@@ -219,7 +219,7 @@ class UiLogic:
 
         row = 0
         col = 0
-        max_columns = 4  # Change the number of columns to 4
+        max_columns = 4
 
         card_width = 250
         card_height = 350
@@ -227,31 +227,23 @@ class UiLogic:
         for part in parts:
             part_number, part_size, mod_ind = part
 
-            # Create a layout to hold the text and image
             part_layout = QVBoxLayout()
 
-            # Display the part number with larger font size
             part_number_label = QLabel(f"<b>{part_number}</b>")
             part_number_label.setAlignment(Qt.AlignCenter)
-            part_number_label.setStyleSheet(
-                "font-size: 16px; padding: 5px;"
-            )  # Adjust font size and padding
+            part_number_label.setStyleSheet("font-size: 16px; padding: 5px;")
             part_layout.addWidget(part_number_label)
 
-            # Display the part size on multiple lines
-            part_size_lines = part_size.split(
-                " x "
-            )  # Assuming ' x ' is the delimiter in part_size
+            part_size_lines = part_size.split(" x ")
             part_size_text = "\n".join(part_size_lines)
             part_size_label = QLabel(part_size_text)
             part_size_label.setAlignment(Qt.AlignCenter)
-            part_size_label.setStyleSheet("padding: 5px;")  # Add padding
+            part_size_label.setStyleSheet("padding: 5px;")
             part_layout.addWidget(part_size_label)
 
-            # Load and display the image
             image_label = QLabel()
             if mod_ind is None:
-                image_file = "generic.jpg"  # Use a generic image if ModInd is None
+                image_file = "generic.jpg"
             else:
                 image_file = mod_ind
 
@@ -263,9 +255,7 @@ class UiLogic:
                 )
 
             pixmap = QPixmap(image_path)
-            pixmap = pixmap.scaled(
-                150, 150, Qt.KeepAspectRatio
-            )  # Adjust the size as needed
+            pixmap = pixmap.scaled(150, 150, Qt.KeepAspectRatio)
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignCenter)
             image_label.mousePressEvent = (
@@ -273,10 +263,9 @@ class UiLogic:
             )
             part_layout.addWidget(image_label)
 
-            # Create a widget to hold the part layout and add it to the grid layout
             part_widget = QWidget()
             part_widget.setLayout(part_layout)
-            part_widget.setFixedSize(card_width, card_height)  # Set fixed size
+            part_widget.setFixedSize(card_width, card_height)
             part_widget.setStyleSheet(
                 """
                 background-color: #E74C3C;  /* Orange/red background */
@@ -291,7 +280,7 @@ class UiLogic:
             )
 
             col += 1
-            if col >= max_columns:  # Change the number of columns as needed
+            if col >= max_columns:  
                 col = 0
                 row += 1
 
