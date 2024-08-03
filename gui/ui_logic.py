@@ -116,7 +116,7 @@ class UiLogic:
             selected_drive_type,
         )
         self.positionComboBox.addItems(positions)
-        self.update_transmissions()  # Update new dropdown
+        self.update_transmissions()  
 
     def update_transmissions(self):
         """Updates the transmission combo box based on the selected position."""
@@ -168,7 +168,7 @@ class UiLogic:
         self.clear_combo_box(self.manufacturerComboBox, "Select manufacturer")
         self.populate_manufacturers()
 
-        # Clear the results layout
+       
         self.clear_results()
 
     def clear_results(self):
