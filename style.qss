@@ -14,6 +14,8 @@ QWidget {
 QLabel {
     color: #000000;  /* Black text */
     font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 5px;
 }
 
 /* QComboBox styling */
@@ -21,10 +23,11 @@ QComboBox {
     background-color: #F0F0F0;  /* Light gray background */
     color: #000000;  /* Black text */
     border: 1px solid #BDC3C7;  /* Light gray border */
-    padding: 5px;
+    padding: 8px;
     font-family: Arial, sans-serif;
     min-width: 200px;  /* Ensure consistent width */
-    margin-bottom: 10px;  /* Add spacing between dropdowns */
+    margin-bottom: 15px;  /* Add spacing between dropdowns */
+    border-radius: 5px;  /* Rounded corners */
 }
 
 QComboBox QAbstractItemView {
@@ -34,19 +37,26 @@ QComboBox QAbstractItemView {
     selection-color: #FFFFFF;  /* Text color of selected item */
 }
 
+QComboBox QAbstractItemView::item:hover {
+    background-color: #C0392B;  /* Background color when hovered */
+    color: #FFFFFF;  /* Text color when hovered */
+}
+
 /* QPushButton styling */
 QPushButton {
     background-color: #E74C3C;  /* Red background */
     color: #FFFFFF;  /* White text */
     border: 1px solid #BDC3C7;  /* Light gray border */
-    border-radius: 5px;
-    padding: 10px;
+    border-radius: 8px;
+    padding: 10px 20px;
     font-family: Arial, sans-serif;
+    font-size: 14px;
 }
 
 QPushButton:hover {
     background-color: #C0392B;  /* Darker red background on hover */
     border: 1px solid #BDC3C7;  /* Ensure the border is still visible on hover */
+    cursor: pointer;  /* Pointer cursor on hover */
 }
 
 /* QScrollArea styling */
@@ -73,4 +83,36 @@ QScrollArea QLabel {
 QScrollArea QPushButton {
     background-color: #E74C3C;  /* Red background for buttons within QScrollArea */
     color: #FFFFFF;  /* White text */
+}
+
+/* Image styling */
+QLabel#logoLabel {
+    border: 1px solid #BDC3C7;  /* Light gray border around the logo */
+    border-radius: 10px;  /* Rounded corners for the logo */
+    padding: 10px;  /* Padding around the logo */
+}
+
+QLabel#bottomImageLabel {
+    border: 1px solid #BDC3C7;  /* Light gray border around the bottom image */
+    border-radius: 10px;  /* Rounded corners for the bottom image */
+    padding: 10px;  /* Padding around the bottom image */
+}
+
+/* Result card styling */
+QWidget#resultCard {
+    background-color: #FFFFFF;  /* White background for result cards */
+    border: 1px solid #BDC3C7;  /* Light gray border */
+    border-radius: 10px;  /* Rounded corners */
+    padding: 10px;  /* Padding inside the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+QLabel#resultCardLabel {
+    font-size: 14px;
+    padding: 5px;
+}
+
+QLabel#resultCardImage {
+    border: 1px solid #BDC3C7;  /* Light gray border around images in result cards */
+    border-radius: 10px;  /* Rounded corners for images */
 }

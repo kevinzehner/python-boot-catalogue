@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1052</height>
+    <width>1440</width>
+    <height>872</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -116,10 +116,10 @@ QScrollArea &gt; QWidget {
    <widget class="QScrollArea" name="resultsScrollArea">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>50</y>
-      <width>531</width>
-      <height>901</height>
+      <x>660</x>
+      <y>30</y>
+      <width>751</width>
+      <height>741</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -133,8 +133,8 @@ QScrollArea &gt; QWidget {
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>531</width>
-       <height>901</height>
+       <width>751</width>
+       <height>741</height>
       </rect>
      </property>
     </widget>
@@ -175,8 +175,8 @@ QScrollArea &gt; QWidget {
    <widget class="QLabel" name="bottomImageLabel">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>510</y>
+      <x>70</x>
+      <y>490</y>
       <width>541</width>
       <height>281</height>
      </rect>
@@ -197,7 +197,7 @@ QScrollArea &gt; QWidget {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1920</width>
+     <width>1440</width>
      <height>24</height>
     </rect>
    </property>
