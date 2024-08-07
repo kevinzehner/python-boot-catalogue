@@ -116,3 +116,4 @@ QLabel#resultCardImage {
     border: 1px solid #BDC3C7;  /* Light gray border around images in result cards */
     border-radius: 10px;  /* Rounded corners for images */
 }
+
