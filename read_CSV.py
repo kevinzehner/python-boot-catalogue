@@ -1,6 +1,9 @@
 import pandas as pd
 import sqlite3
 
+
+# This code is not needed for the functunality of the GUI, it was only to create the SQLlite Database
+
 # This script reads a CSV file and writes its contents to an SQLite database.
 # - The CSV file path is specified.
 # - The CSV file is read into a pandas DataFrame.
@@ -9,13 +12,11 @@ import sqlite3
 
 def csv_to_sqlite(csv_file_path, db_file_path):
     try:
-        # Read the CSV file into a DataFrame
         df = pd.read_csv(csv_file_path)
 
         conn = sqlite3.connect(db_file_path)
 
-        # Write the DataFrame to the SQLite database
-        # Table name will be 'boots'
+   
         df.to_sql("boots", conn, if_exists="replace", index=False)
         print("Data successfully written to the database.")
 
