@@ -1,6 +1,6 @@
 """
 This module defines the UiLogic class, which contains the logic for handling user interactions 
-and dynamic updates to the UI components. It includes methods to update dropdowns based on 
+and updates to the UI components. It includes methods to update dropdowns based on 
 user selections, reset the UI, search for parts based on criteria, and display the results. 
 The logic is separated from the UI component initialization to ensure modularity and maintainability.
 """
@@ -25,7 +25,7 @@ class UiLogic:
         self.resetButton.clicked.connect(self.reset_dropdowns)
 
     def update_models(self):
-        """Updates the model combo box based on the selected manufacturer."""
+        """Updates the model dropdown based on the selected manufacturer."""
         self.clear_combo_box(self.modelComboBox, "Select model")
         selected_manufacturer = self.manufacturerComboBox.currentText()
         if selected_manufacturer == "Select manufacturer":

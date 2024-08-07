@@ -35,10 +35,9 @@ class UiComponents:
         self.init_images()
 
     def init_labels(self):
-        """Initializes the QLabel components."""
         self.logoLabel = self.findChild(QLabel, "logoLabel")
         if self.logoLabel is not None:
-            self.logoLabel.setFixedSize(150, 150)  # Adjust the size as needed
+            self.logoLabel.setFixedSize(150, 150)  
             self.logoLabel.setAlignment(Qt.AlignCenter)
 
         self.messageLabel = self.findChild(QLabel, "messageLabel")
@@ -60,35 +59,30 @@ class UiComponents:
         self.transmissionComboBox = self.findChild(QComboBox, "transmissionComboBox")
 
     def init_buttons(self):
-        """Initializes the Search and Reset components."""
         self.searchButton = self.findChild(QPushButton, "searchButton")
         self.resetButton = self.findChild(QPushButton, "resetButton")
 
     def init_results_area(self):
-        """Initializes the results box."""
         self.resultsScrollArea = self.findChild(QScrollArea, "resultsScrollArea")
 
-        # Create a QWidget and set it as the widget for resultsScrollArea
         self.resultsWidget = QWidget()
         self.resultsScrollArea.setWidget(self.resultsWidget)
         self.resultsScrollArea.setWidgetResizable(True)
 
-        # Set a layout for the resultsWidget
+        
         self.resultsLayout = QGridLayout(self.resultsWidget)
         self.resultsWidget.setLayout(self.resultsLayout)
 
-        # Set size policy to ensure the widget expands properly
+      
         self.resultsWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     def init_images(self):
-        """Initializes and sets the images for the logo and bottom image."""
         self.set_logo_image()
         self.bottomImageLabel = self.findChild(QLabel, "bottomImageLabel")
         if self.bottomImageLabel is not None:
             self.set_bottom_image()
 
     def set_logo_image(self):
-        """Sets the logo image to the logoLabel."""
         base_path = os.path.dirname(os.path.abspath(__file__))
         logo_path = os.path.join(base_path, "..", "main-images", "logo.JPG")
         if os.path.exists(logo_path):

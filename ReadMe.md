@@ -8,7 +8,7 @@ This project is a CV Boots Catalogue Application developed using Python and PyQt
 
 - **Dropdown Menus**: Users can select vehicle manufacturer, model, engine size, mark series, drive type, position, and transmission to filter available parts.
 - **Search Functionality**: Based on the selected criteria, the application searches the database for available parts and displays them.
-- **Image Display**: Each part is accompanied by an image for easy identification.
+- **Image Display**: Most parts have an image of a diagram included, although it is missing on some. 
 - **Results Layout**: Results are displayed in a grid layout, with each part's size and number presented.
 
 ## Installation
@@ -67,7 +67,7 @@ This project is a CV Boots Catalogue Application developed using Python and PyQt
 
 - Ensure the database file `boots.db` is present in the root directory of the application.
 - If the application is slow, verify that the indexes have been created on the database.
-- We attempted to package the application using PyInstaller but were unable to open the packaged application. This issue is still unresolved.
+- attempted to package the application using PyInstaller but was unable to open the packaged application. This issue is still unresolved.
 
 ## Contributing
 
